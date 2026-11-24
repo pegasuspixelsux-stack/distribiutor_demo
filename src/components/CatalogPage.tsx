@@ -396,10 +396,12 @@ const activeFilters =
         <div className="mb-6">
           <div className={`flex items-center gap-2 ${leading ? 'max-md:flex-col max-md:items-stretch md:gap-4' : ''}`}>
             {leading && <div className="md:w-1/2 md:shrink-0 md:order-2">{leading}</div>}
+            {/* Phones: pills and layout selector share one row (the search bar sits above); desktop ignores this wrapper */}
+            <div className="flex flex-1 min-w-0 items-center gap-2 md:contents">
             <div
               role="group"
               aria-label="Categorías"
-              className={`flex ${leading ? 'md:w-1/2 md:flex-none' : 'flex-1'} min-w-0 flex-nowrap items-center gap-2 overflow-x-auto -ml-3 pl-3 md:mx-0 md:pl-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+              className={`flex flex-1 ${leading ? 'md:w-1/2 md:flex-none' : ''} min-w-0 flex-nowrap items-center gap-2 overflow-x-auto -ml-3 pl-3 md:mx-0 md:pl-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
             >
               {[{ id: 'all', label: 'Todas' }, ...categories].map((c) => {
                 const active = category === c.id;
@@ -438,6 +440,7 @@ const activeFilters =
                   <Icon className="w-4 h-4" />
                 </button>
               ))}
+            </div>
             </div>
           </div>
         </div>
