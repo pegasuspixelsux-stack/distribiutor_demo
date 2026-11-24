@@ -337,6 +337,7 @@ export default function FrescoHome({
       <CatalogPage
         items={baseProperties}
         embedded
+        beforeGrid={<SimilarItems title="Más vendidos" items={bestSellers} embedded />}
         leading={(
         <form
             role="search"
@@ -372,38 +373,6 @@ export default function FrescoHome({
       />
 
       {/* --- BODY: search, category pills and the "Más vendidos" slider. The full catalog (12 per page) lives at /productos --- */}
-      <section id="properties" className="scroll-mt-4 pt-[clamp(16px,3svh,24px)] md:pt-8 pb-8 md:pb-44 px-3 md:px-6 max-w-[1440px] mx-auto max-md:bg-white max-md:rounded-3xl max-md:mt-[clamp(8px,1.5svh,16px)] max-md:mb-2">
-
-        {/* Category pills: each one opens the catalog already filtered */}
-        {categories.length > 0 && (
-          <div
-            role="group"
-            aria-label="Categorías"
-            className="flex flex-nowrap items-center gap-2 overflow-x-auto -ml-3 pl-3 md:mx-0 md:pl-0 mb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {[{ id: 'all', label: 'Todas' }, ...categories].map((c) => (
-              <Link
-                key={c.id}
-                href={c.id === 'all' ? '/productos' : `/productos?category=${encodeURIComponent(c.id)}`}
-                className="shrink-0 whitespace-nowrap rounded-full px-4 py-2 max-md:min-h-10 inline-flex items-center text-xs max-md:text-[15px] font-medium bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E8E8ED] active:scale-95 transition"
-              >
-                {c.label}
-              </Link>
-            ))}
-          </div>
-        )}
-
-        <SimilarItems title="Más vendidos" items={bestSellers} embedded />
-
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/productos"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2E7D32] text-white px-8 py-3 max-md:min-h-12 text-sm max-md:text-base font-semibold hover:bg-[#2E7D32]/85 active:scale-95 transition-all"
-          >
-            Ver todo el catálogo <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
 
       <InfoSections />
 

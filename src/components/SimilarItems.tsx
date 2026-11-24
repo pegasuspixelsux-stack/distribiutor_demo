@@ -49,7 +49,11 @@ export default function SimilarItems({ title, items, embedded = false }: { title
         className={`flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth ${embedded ? '-mx-3 px-3 md:mx-0 md:px-0 scroll-pl-3 md:scroll-pl-0' : '-mx-6 px-6 scroll-pl-6'} pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
       >
         {items.map((item) => (
-          <li key={item.id} className="snap-start shrink-0 w-[60%] sm:w-[40%] md:w-[28%] lg:w-[22%]">
+          <li key={item.id} className={`snap-start shrink-0 ${
+              embedded
+                ? 'w-[calc((100%-12px)/2*0.75)] md:w-[calc((100%-48px)/3*0.75)] lg:w-[calc((100%-72px)/4*0.75)]' // 3/4 of a catalog grid card
+                : 'w-[60%] sm:w-[40%] md:w-[28%] lg:w-[22%]'
+            }`}>
             <Link href={`/productos/${item.id}`} className="group relative block aspect-square rounded-2xl overflow-hidden bg-[#E5E5EA]">
               <PropertyImage
                 src={item.image}

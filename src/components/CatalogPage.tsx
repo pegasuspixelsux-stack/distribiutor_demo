@@ -61,7 +61,7 @@ function pageNumbers(current: number, total: number): (number | null)[] {
   return out;
 }
 
-export default function CatalogPage({ items: baseItems, embedded = false, leading }: { items: HomeProperty[]; embedded?: boolean; leading?: ReactNode }) {
+export default function CatalogPage({ items: baseItems, embedded = false, leading, beforeGrid }: { items: HomeProperty[]; embedded?: boolean; leading?: ReactNode; beforeGrid?: ReactNode }) {
   // A customer who opened their access link sees their price level; everyone else sees list prices.
   const { client, level, signOutClient, favorites } = useClient();
   const allowLoose = client?.allowLoose ?? false;
@@ -439,6 +439,8 @@ const activeFilters =
             </div>
           </div>
         </div>
+
+        {beforeGrid && <div className="mb-6">{beforeGrid}</div>}
 
         <div className={`grid ${layout === 'two' ? 'grid-cols-2' : 'grid-cols-1'} md:grid-cols-3 lg:grid-cols-4 ${layout === 'list' ? 'gap-2' : 'gap-3'} md:gap-6`}>
           {filtered.length === 0 && (
