@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import CatalogPage from '@/src/components/CatalogPage';
-import { loadHomeData, type HomeProperty } from '@/src/lib/homeData';
-import { sampleProperties } from '@/src/data/sampleProperties';
-import { formatMoney, formatQuantity, typeLabels, withUnitSuffix } from '@/src/utils/format';
+import { loadHomeData } from '@/src/lib/homeData';
 
 export const metadata: Metadata = {
   title: 'Catálogo Mayorista',
@@ -12,28 +10,7 @@ export const metadata: Metadata = {
 // Same cache window as the homepage.
 export const revalidate = 60;
 
-/** The built-in samples, shown until the first real item exists (they open /productos/sample-N). */
-const samples: HomeProperty[] = sampleProperties.map((p, i) => ({
-  id: `sample-${i + 1}`,
-  title: p.title,
-  location: '',
-  price: withUnitSuffix(formatMoney(p.price, p.currency), p.pricingMode),
-  salePrice: p.salePrice === undefined ? undefined : withUnitSuffix(formatMoney(p.salePrice, p.currency), p.pricingMode),
-  pricingMode: p.pricingMode,
-  listPrice: p.price,
-  unitPrice: p.salePrice ?? p.price,
-  beds: 0,
-  baths: 0,
-  area: formatQuantity(p.weight, p.unit),
-  image: p.photos[0]?.url ?? '',
-  href: `/productos/sample-${i + 1}`,
-  type: p.type,
-  typeLabel: typeLabels[p.type as string] ?? p.type,
-  inStock: p.inStock !== false,
-  featured: i < 6,
-}));
-
 export default async function Page() {
   const { properties } = await loadHomeData();
-  return <CatalogPage items={properties.length ? properties : samples} />;
+  return <CatalogPage items={properties} />;
 }

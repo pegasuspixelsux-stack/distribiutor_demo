@@ -29,116 +29,6 @@ import { useBusiness } from '@/src/context/BusinessContext';
 
 
 
-const fallbackProperties: HomeProperty[] = [
-  {
-    id: 1,
-    title: "Tomates perita",
-    location: "Canelones, UY",
-    price: "US$ 4,50 / lb",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Orgánico", "Cajón 12 lb", "Calidad A"],
-    type: 'vegetable',
-    image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Sandía sin semillas",
-    location: "Salto, UY",
-    price: "US$ 6,90 c/u",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Sin transgénicos", "18 lb c/u", "Calidad A"],
-    type: 'fruit',
-    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Mangos Ataulfo",
-    location: "Rivera, UY",
-    price: "US$ 18,00 / cajón",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Orgánico", "Cajón 10 lb", "Calidad A"],
-    type: 'tropical',
-    image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Ananás dorados",
-    location: "Rivera, UY",
-    price: "US$ 3,80 c/u",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Convencional", "4 lb c/u", "Calidad A"],
-    type: 'tropical',
-    image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Papas blancas",
-    location: "San José, UY",
-    price: "US$ 0,85 / lb",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Convencional", "Bolsa 50 lb", "Calidad B"],
-    type: 'vegetable',
-    image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Mandarinas clementinas",
-    location: "Salto, UY",
-    price: "US$ 2,20 / lb",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Orgánico", "Caja 5 lb", "Calidad A"],
-    type: 'fruit',
-    image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 7,
-    title: "Mix de verduras de huerta",
-    location: "Montevideo, UY",
-    price: "US$ 32,00 / caja",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Orgánico", "Caja 20 lb", "Calidad A"],
-    type: 'vegetable',
-    image: "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 8,
-    title: "Mix de frutos rojos y cítricos",
-    location: "Paysandú, UY",
-    price: "US$ 21,00 / caja",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Sin transgénicos", "Caja 8 lb", "Calidad A"],
-    type: 'fruit',
-    image: "https://images.unsplash.com/photo-1519996529931-28324d5a630e?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 9,
-    title: "Hojas verdes para ensalada",
-    location: "Canelones, UY",
-    price: "US$ 3,20 / lb",
-    beds: 0,
-    baths: 0,
-    area: "",
-    stats: ["Orgánico", "Cajón 10 lb", "Calidad A"],
-    type: 'leafy',
-    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop",
-  },
-];
 
 
 /** Hero heading / subheading styles: on phones both are as wide as the buttons (max-w-sm). */
@@ -158,15 +48,10 @@ const HERO_BTN_SECONDARY =
 export default function FrescoHome({
   initialProperties = [],
 }: {
-  /** Active properties loaded on the server; the built-in samples show if there are none. */
+  /** Active products loaded on the server from the database. */
   initialProperties?: HomeProperty[];
 }) {
-  // The built-in samples open /productos/sample-N, which the item page fills from the same sample data.
-  const [baseProperties] = useState<HomeProperty[]>(
-    initialProperties.length
-      ? initialProperties
-      : fallbackProperties.map((p) => ({ ...p, href: `/productos/sample-${p.id}` })),
-  );
+  const [baseProperties] = useState<HomeProperty[]>(initialProperties);
   // A customer who logged in with Acceso mayoristas sees their price level; everyone else sees list prices.
   const { client, level, signOutClient } = useClient();
   const business = useBusiness();
@@ -268,12 +153,19 @@ export default function FrescoHome({
               <h1 className={HERO_HEADING_CLASS}>{business.heroHeading}</h1>
             ) : (
               <h1 className={HERO_HEADING_CLASS}>
-                {/* Phones: each of the 3 rows is scaled to the width of the buttons */}
-                {['Venta de Frutas y', 'Verduras frescas', 'directo de la quinta'].map((line) => (
-                  <FitText key={line} as="span" className="block w-full" min={16} max={44}>
-                    {line}
-                  </FitText>
-                ))}
+                {/* Phones: 3 rows, each scaled to the width of the buttons */}
+                <span className="block md:hidden">
+                  {['Venta de Frutas y', 'Verduras frescas', 'directo de la quinta'].map((line) => (
+                    <FitText key={line} as="span" className="block w-full" min={16} max={44}>
+                      {line}
+                    </FitText>
+                  ))}
+                </span>
+                {/* Desktop: 2 rows of equal width (the shorter row is justified to the longer one) */}
+                <span className="max-md:hidden block w-fit mx-auto">
+                  <span className="block [text-align-last:justify]">Venta de Frutas y Verduras</span>
+                  <span className="block [text-align-last:justify]">frescas directo de la quinta</span>
+                </span>
               </h1>
             )}
             {business.heroText ? (
