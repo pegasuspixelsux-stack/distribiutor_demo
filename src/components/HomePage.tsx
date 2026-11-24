@@ -278,9 +278,14 @@ export default function FrescoHome({
             {business.heroText ? (
               <p className={HERO_TEXT_CLASS}>{business.heroText}</p>
             ) : (
-              <FitText as="p" className={HERO_TEXT_CLASS} min={11} max={20}>
-                De pequeña familia productora y vecinos! Emprendimiento familiar de Punta Espinillo.
-              </FitText>
+              <p className={HERO_TEXT_CLASS}>
+                {/* Phones: each of the 2 rows is scaled to the width of the buttons */}
+                {['De pequeña familia productora y vecinos!', 'Emprendimiento familiar de Punta Espinillo.'].map((line) => (
+                  <FitText key={line} as="span" className="block w-full" min={11} max={22}>
+                    {line}
+                  </FitText>
+                ))}
+              </p>
             )}
             <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-6 flex flex-col sm:flex-row gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full max-md:max-w-sm">
               {client && level ? (
