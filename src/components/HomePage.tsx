@@ -155,7 +155,7 @@ export default function FrescoHome({
               <h1 className={HERO_HEADING_CLASS}>
                 {/* Phones: 3 rows, each scaled to the width of the buttons */}
                 <span className="block md:hidden">
-                  {['Venta de Frutas y', 'Verduras frescas', 'directo de la quinta'].map((line) => (
+                  {['Venta de Frutas y', 'Verduras Frescas', 'Directo de La Quinta'].map((line) => (
                     <FitText key={line} as="span" className="block w-full" min={16} max={44}>
                       {line}
                     </FitText>
@@ -164,7 +164,7 @@ export default function FrescoHome({
                 {/* Desktop: 2 rows of equal width (the shorter row is justified to the longer one) */}
                 <span className="max-md:hidden block w-fit mx-auto">
                   <span className="block [text-align-last:justify]">Venta de Frutas y Verduras</span>
-                  <span className="block [text-align-last:justify]">frescas directo de la quinta</span>
+                  <span className="block [text-align-last:justify]">Frescas Directo de La Quinta</span>
                 </span>
               </h1>
             )}
