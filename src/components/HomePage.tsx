@@ -337,7 +337,8 @@ export default function FrescoHome({
       <CatalogPage
         items={baseProperties}
         embedded
-        beforeGrid={<SimilarItems title="Más vendidos" items={bestSellers} embedded />}
+        gridTitle="Nuestros Productos"
+        afterGrid={<SimilarItems title="Más vendidos" items={bestSellers} embedded />}
         leading={(
         <form
             role="search"

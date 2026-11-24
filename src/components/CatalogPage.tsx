@@ -20,7 +20,8 @@ import { applyBoxFirst, applyLevel } from '@/src/utils/pricing';
 import InfoSections from '@/src/components/InfoSections';
 import BrandName from '@/src/components/BrandName';
 
-const PAGE_SIZE = 12; // products per page
+const PAGE_SIZE = 12; // default products per page
+const PAGE_SIZES = [12, 24, 36, 48, 60];
 
 type Sort = 'relevance' | 'price-asc' | 'price-desc' | 'name';
 type Availability = 'all' | 'in-stock' | 'on-sale';
@@ -61,7 +62,7 @@ function pageNumbers(current: number, total: number): (number | null)[] {
   return out;
 }
 
-export default function CatalogPage({ items: baseItems, embedded = false, leading, beforeGrid }: { items: HomeProperty[]; embedded?: boolean; leading?: ReactNode; beforeGrid?: ReactNode }) {
+export default function CatalogPage({ items: baseItems, embedded = false, leading, afterGrid, gridTitle }: { items: HomeProperty[]; embedded?: boolean; leading?: ReactNode; afterGrid?: ReactNode; gridTitle?: string }) {
   // A customer who opened their access link sees their price level; everyone else sees list prices.
   const { client, level, signOutClient, favorites } = useClient();
   const allowLoose = client?.allowLoose ?? false;
@@ -73,6 +74,7 @@ export default function CatalogPage({ items: baseItems, embedded = false, leadin
   const [maxPrice, setMaxPrice] = useState('');
   const [sort, setSort] = useState<Sort>('relevance');
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
 const [filtersOpen, setFiltersOpen] = useState(false); // mobile only
 
   // Links from the homepage and footer open the catalog already filtered: /productos?category=<id>&q=<search>.
@@ -192,11 +194,11 @@ const activeFilters =
       setPage(1);
     };
 
-  // 12 products per page; a filter change goes back to page 1.
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  // products per page (selectable on the homepage); a filter change goes back to page 1.
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages);
   const grouped = groupByCategory(filtered);
-  const visible = grouped.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const visible = grouped.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const goToPage = (n: number) => {
     setPage(n);
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
@@ -440,7 +442,7 @@ const activeFilters =
           </div>
         </div>
 
-        {beforeGrid && <div className="mb-6">{beforeGrid}</div>}
+        {gridTitle && <h2 className="mb-6 text-2xl md:text-3xl font-semibold tracking-tight">{gridTitle}</h2>}
 
         <div className={`grid ${layout === 'two' ? 'grid-cols-2' : 'grid-cols-1'} md:grid-cols-3 lg:grid-cols-4 ${layout === 'list' ? 'gap-2' : 'gap-3'} md:gap-6`}>
           {filtered.length === 0 && (
@@ -570,6 +572,25 @@ const activeFilters =
           })}
         </div>
 
+        {embedded && filtered.length > PAGE_SIZE && (
+          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-[#515154]">
+            <label htmlFor="page-size">Mostrar</label>
+            <select
+              id="page-size"
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setPage(1);
+              }}
+              className="h-10 rounded-full bg-[#F5F5F7] px-4 text-sm font-medium text-[#1D1D1F] outline-none"
+            >
+              {PAGE_SIZES.map((n) => (
+                <option key={n} value={n}>{n} productos</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         {totalPages > 1 && (
           <nav aria-label="Páginas del catálogo" className="mt-8 flex flex-wrap items-center justify-center gap-2">
             <button
@@ -608,6 +629,8 @@ const activeFilters =
             </button>
           </nav>
         )}
+
+        {afterGrid && <div className="mt-10">{afterGrid}</div>}
 
         {!embedded && filtered.length > 0 && (
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm">
