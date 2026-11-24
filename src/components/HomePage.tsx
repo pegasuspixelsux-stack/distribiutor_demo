@@ -245,7 +245,7 @@ export default function FrescoHome({
           </div>
         </div>
       </header>
-        <section data-home-hero className="relative w-full max-md:h-[calc(50svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:h-[80svh] md:min-h-[480px] md:pt-12 md:pb-24">
+        <section data-home-hero className="relative w-full max-md:h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:h-[80svh] md:min-h-[480px] md:pt-12 md:pb-24">
           {/* Background photo + green overlay: phones get one flat, fully opaque green layer; wider screens get a gradient, solid on the left (behind the text) and more transparent to the right */}
           <div
             aria-hidden="true"
