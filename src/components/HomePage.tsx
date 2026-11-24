@@ -257,7 +257,7 @@ export default function FrescoHome({
           <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: 'url(/verdi_fruts.webp)' }} />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_50%,transparent)] md:bg-transparent md:bg-gradient-to-r md:from-[var(--brand-bg,#2E7D32)] md:from-[30%] md:via-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_55%,transparent)] md:via-[50%] md:to-transparent md:to-[75%]"
+            className="absolute inset-0 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_50%,transparent)] md:bg-transparent"
           />
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(2.5rem,calc((100%-1440px)/2+4rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-[max(12px,env(safe-area-inset-bottom))] pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] flex flex-col items-center text-center md:pt-9 md:pb-9 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7">
             <span className="max-md:hidden block w-fit max-md:mt-0 md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
