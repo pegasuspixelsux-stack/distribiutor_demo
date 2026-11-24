@@ -210,7 +210,7 @@ export default function FrescoHome({
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="h-14 px-3 flex items-center justify-between">
-          <MobileNavMenu bare align="left" />
+          <span className="pl-1 font-semibold text-lg tracking-tight text-white drop-shadow">Verdis Fruts</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -222,6 +222,7 @@ export default function FrescoHome({
               <Search className="w-5 h-5" />
             </button>
             <InstallButton className="w-10 h-10 shrink-0 flex items-center justify-center text-white drop-shadow hover:opacity-80 active:scale-90 transition" />
+            <MobileNavMenu bare align="right" />
           </div>
         </div>
       </header>
