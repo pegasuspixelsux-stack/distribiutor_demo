@@ -15,6 +15,7 @@ import { toBestSellers } from '@/src/utils/bestSellers';
 import CartButton from '@/src/components/CartButton';
 import { OPEN_CLIENT_LOGIN } from '@/src/components/SignInNotice';
 import WholesaleAccess from '@/src/components/WholesaleAccess';
+import CatalogPage from '@/src/components/CatalogPage';
 import SiteNavLinks from '@/src/components/SiteNavLinks';
 import MobileNavMenu from '@/src/components/MobileNavMenu';
 import { useClient } from '@/src/context/ClientContext';
@@ -24,7 +25,6 @@ import {
   KeyRound,
   Search,
 } from 'lucide-react';
-import BrandName from '@/src/components/BrandName';
 import { useBusiness } from '@/src/context/BusinessContext';
 
 
@@ -228,13 +228,14 @@ export default function FrescoHome({
 
       <SearchModal open={searchOpen} onClose={closeSearch} categories={categories} initialQuery={query} />
 
+      <div className="relative max-w-[1440px] mx-auto px-0 md:max-w-none md:px-0 pt-0">
       {/* --- NAVIGATION --- */}
-      <header className="hidden md:block sticky top-0 z-50 bg-[#FBFBFD]/80 backdrop-blur-md">
+      <header className="hidden md:block absolute inset-x-0 top-0 z-50 text-white [&_nav]:!text-white [&_nav_a:hover]:!text-white/80">
         <div className="bg-[#2E7D32] text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-semibold text-sm min-[420px]:text-base sm:text-lg tracking-tight"><BrandName /></span>
+          <span className="font-semibold text-xl sm:text-2xl tracking-tight text-white">Verdis Fruts</span>
           <SiteNavLinks />
           <div className="flex items-center gap-1">
           <WholesaleAccess />
@@ -243,51 +244,42 @@ export default function FrescoHome({
           </div>
         </div>
       </header>
-
-      <div className="max-w-[1440px] mx-auto px-0 md:px-6 pt-0 md:pt-4">
-        <section data-home-hero className="relative w-full max-md:h-[calc(50svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-start max-md:rounded-none overflow-hidden rounded-3xl border max-md:border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:portrait:h-[38.5svh] md:portrait:min-h-[360px] lg:landscape:block">
+        <section data-home-hero className="relative w-full max-md:h-[calc(50svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:h-[80svh] md:min-h-[480px] md:pt-12 md:pb-24">
           {/* Background photo + green overlay: phones get one flat, fully opaque green layer; wider screens get a gradient, solid on the left (behind the text) and more transparent to the right */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-center hidden md:block"
+            className="absolute inset-0 bg-cover bg-[position:50%_75%] hidden md:block"
             style={{
               backgroundImage:
-                'url(https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=2000&auto=format&fit=crop)',
+                'url(/verdi_fruts.webp)',
             }}
           />
-          <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: 'url(/hero-mobile-2.webp)' }} />
+          <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: 'url(/verdi_fruts.webp)' }} />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[var(--brand-bg,#2E7D32)] md:bg-transparent md:bg-gradient-to-r md:from-[var(--brand-bg,#2E7D32)] md:from-[55%] md:via-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_55%,transparent)] md:via-[80%] md:to-transparent"
+            className="absolute inset-0 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_50%,transparent)] md:bg-transparent md:bg-gradient-to-r md:from-[var(--brand-bg,#2E7D32)] md:from-[30%] md:via-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_55%,transparent)] md:via-[50%] md:to-transparent md:to-[75%]"
           />
-          {/* Desktop only: the logo on the right column, over the overlay */}
-          <div aria-hidden="true" className="hidden xl:flex absolute inset-y-0 right-[calc(2.5rem+5%)] w-[16%] min-[1400px]:w-[20.8%] items-center justify-center pointer-events-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/fresco_footer_white.png" alt="" className="w-full max-h-[100%] object-contain drop-shadow-lg" />
-          </div>
-            {/* Phones: brand block, centered in the hero's flow (8pt spacing scale: 8 / 16 / 32) */}
-            <div className="md:hidden relative flex flex-1 min-h-0 items-center justify-center px-5 pt-[calc(5.25rem+env(safe-area-inset-top))]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/fresco_footer_white.png" alt="" aria-hidden="true" className="h-[48%] w-auto max-w-full object-contain drop-shadow-lg" />
-          </div>
-            <div className="relative w-full max-md:shrink-0 px-5 md:px-10 max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-[max(12px,env(safe-area-inset-bottom))] pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] max-md:flex max-md:flex-col max-md:items-center max-md:text-center md:pt-9 md:pb-9 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7">
+            <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(2.5rem,calc((100%-1440px)/2+4rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-[max(12px,env(safe-area-inset-bottom))] pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] flex flex-col items-center text-center md:pt-9 md:pb-9 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7">
             <span className="max-md:hidden block w-fit max-md:mt-0 md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
               {business.heroEyebrow || 'Distribución hortifrutícola B2B'}
             </span>
             {business.heroHeading ? (
               <h1 className={HERO_HEADING_CLASS}>{business.heroHeading}</h1>
             ) : (
-              // Phones: each line is scaled to be exactly as wide as the buttons below.
-              <FitText as="h1" className={HERO_HEADING_CLASS} min={16} max={40}>
-                <span className="block">Distribución Mayorista</span>
-                <span className="block">de Frutas y Verduras</span>
-              </FitText>
+              <h1 className={HERO_HEADING_CLASS}>
+                {/* Phones: each of the 3 rows is scaled to the width of the buttons */}
+                {['Venta de Frutas y', 'Verduras frescas', 'directo de la quinta'].map((line) => (
+                  <FitText key={line} as="span" className="block w-full" min={16} max={44}>
+                    {line}
+                  </FitText>
+                ))}
+              </h1>
             )}
             {business.heroText ? (
               <p className={HERO_TEXT_CLASS}>{business.heroText}</p>
             ) : (
               <FitText as="p" className={HERO_TEXT_CLASS} min={11} max={20}>
-                Abastecimiento directo para comercios y gastronomía.
+                De pequeña familia productora y vecinos! Emprendimiento familiar de Punta Espinillo.
               </FitText>
             )}
             <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-6 flex flex-col sm:flex-row gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full max-md:max-w-sm">
@@ -335,9 +327,11 @@ export default function FrescoHome({
         </section>
       </div>
 
-      {/* --- BODY: search, category pills and the "Más vendidos" slider. The full catalog (12 per page) lives at /productos --- */}
-      <section id="properties" className="scroll-mt-4 pt-[clamp(16px,3svh,24px)] md:pt-8 pb-8 md:pb-44 px-3 md:px-6 max-w-[1440px] mx-auto max-md:bg-white max-md:rounded-3xl max-md:mt-[clamp(8px,1.5svh,16px)] max-md:mb-2">
-
+      {/* --- Catalog grid (same as /productos), right under the hero --- */}
+      <CatalogPage
+        items={baseProperties}
+        embedded
+        leading={(
         <form
             role="search"
             onSubmit={(e) => {
@@ -345,7 +339,7 @@ export default function FrescoHome({
               const q = query.trim();
               router.push(q ? `/productos?q=${encodeURIComponent(q)}` : '/productos');
             }}
-            className="w-full md:w-3/4 mx-auto mb-5 md:mb-8 bg-white rounded-2xl shadow-lg border border-[#000000]/5 p-3 flex flex-col gap-3"
+            className="w-full mb-0 bg-white rounded-2xl shadow-lg border border-[#000000]/5 p-3 flex flex-col gap-3"
           >
             <div className="flex items-center gap-2 pl-3">
               <Search className="hidden md:block w-5 h-5 text-[#515154] shrink-0" />
@@ -368,6 +362,12 @@ export default function FrescoHome({
               </button>
             </div>
           </form>
+        )}
+      />
+
+      {/* --- BODY: search, category pills and the "Más vendidos" slider. The full catalog (12 per page) lives at /productos --- */}
+      <section id="properties" className="scroll-mt-4 pt-[clamp(16px,3svh,24px)] md:pt-8 pb-8 md:pb-44 px-3 md:px-6 max-w-[1440px] mx-auto max-md:bg-white max-md:rounded-3xl max-md:mt-[clamp(8px,1.5svh,16px)] max-md:mb-2">
+
         {/* Category pills: each one opens the catalog already filtered */}
         {categories.length > 0 && (
           <div

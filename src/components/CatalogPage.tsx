@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, type ReactNode, useEffect, useMemo, useState } from 'react';
 import { groupByCategory } from '@/src/utils/group';
 import Link from 'next/link';
 import { Heart, LayoutGrid, List, LogOut, Plus, Search, SlidersHorizontal, Square, X } from 'lucide-react';
@@ -61,7 +61,7 @@ function pageNumbers(current: number, total: number): (number | null)[] {
   return out;
 }
 
-export default function CatalogPage({ items: baseItems }: { items: HomeProperty[] }) {
+export default function CatalogPage({ items: baseItems, embedded = false, leading }: { items: HomeProperty[]; embedded?: boolean; leading?: ReactNode }) {
   // A customer who opened their access link sees their price level; everyone else sees list prices.
   const { client, level, signOutClient, favorites } = useClient();
   const allowLoose = client?.allowLoose ?? false;
@@ -202,10 +202,11 @@ const activeFilters =
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const soft = embedded ? 'bg-[#F5F5F7]' : 'bg-white'; // controls sit on a white section when embedded
   return (
-    <div className="min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)] text-[#1D1D1F] selection:bg-[#000000] selection:text-[#FFFFFF] font-sans antialiased">
+    <div className={`${embedded ? 'bg-white rounded-t-3xl -mt-6 relative z-10' : 'min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)]'} text-[#1D1D1F] selection:bg-[#000000] selection:text-[#FFFFFF] font-sans antialiased`}>
       {/* --- NAVIGATION --- */}
-      <header className={`sticky top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${scrolled ? 'max-md:bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_80%,transparent)] md:bg-[#FBFBFD]/80 backdrop-blur-md' : 'bg-transparent'}`}>
+      {!embedded && <header className={`sticky top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${scrolled ? 'max-md:bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_80%,transparent)] md:bg-[#FBFBFD]/80 backdrop-blur-md' : 'bg-transparent'}`}>
         <div className="bg-[#2E7D32] text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
@@ -218,10 +219,10 @@ const activeFilters =
           <MobileNavMenu glass />
           </div>
         </div>
-      </header>
+      </header>}
 
       {/* --- ALL PRODUCTS: 4-column grid --- */}
-      <section id="catalog" className={`pt-4 md:pt-6 pb-12 px-3 md:px-6 max-w-[1440px] mx-auto scroll-mt-32 bg-[#ECECF1] rounded-3xl max-md:mt-3 max-md:mb-2 md:mt-4 md:w-[calc(100%-3rem)]`}>
+      <section id="catalog" className={`pt-4 md:pt-6 pb-12 px-3 md:px-6 max-w-[1440px] mx-auto scroll-mt-32 ${embedded ? '' : 'bg-[#ECECF1] rounded-3xl max-md:mt-3 max-md:mb-2 md:mt-4 md:w-[calc(100%-3rem)]'}`}>
         {/* Signed-in customer: greeting with their favorites and a log-out button, above the search */}
         {client && level && (
           <div className="mb-5 flex flex-col items-center gap-2 text-center md:flex-row md:justify-between md:text-left">
@@ -231,7 +232,7 @@ const activeFilters =
             <div className="flex items-center gap-2">
               <Link
                 href="/favoritos"
-                className="h-9 px-4 rounded-full bg-white text-[#1D1D1F] text-sm font-medium inline-flex items-center gap-2 hover:bg-[#F5F5F7] active:scale-95 transition"
+                className={`h-9 px-4 rounded-full ${soft} text-[#1D1D1F] text-sm font-medium inline-flex items-center gap-2 hover:bg-[#F5F5F7] active:scale-95 transition`}
               >
                 <Heart className="w-4 h-4" />
                 Favoritos
@@ -246,7 +247,7 @@ const activeFilters =
                 onClick={signOutClient}
                 aria-label="Cerrar sesión"
                 title="Cerrar sesión"
-                className="w-9 h-9 shrink-0 rounded-full bg-white text-[#1D1D1F] flex items-center justify-center hover:bg-[#F5F5F7] active:scale-95 transition"
+                className={`w-9 h-9 shrink-0 rounded-full ${soft} text-[#1D1D1F] flex items-center justify-center hover:bg-[#F5F5F7] active:scale-95 transition`}
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -255,7 +256,7 @@ const activeFilters =
         )}
 
         {/* Search bar (with the filters) */}
-        <div id="search" className="mb-4">
+        {!embedded && <div id="search" className="mb-4">
           <form
             role="search"
             aria-label="Búsqueda avanzada"
@@ -281,7 +282,7 @@ const activeFilters =
                 onClick={() => setFiltersOpen((o) => !o)}
                 aria-expanded={filtersOpen}
                 aria-controls="advanced-filters"
-                className="md:hidden shrink-0 relative w-11 h-11 rounded-full bg-white flex items-center justify-center"
+                className={`md:hidden shrink-0 relative w-11 h-11 rounded-full ${soft} flex items-center justify-center`}
                 aria-label="Mostrar filtros"
               >
                 <SlidersHorizontal className="w-4 h-4" />
@@ -387,15 +388,16 @@ const activeFilters =
               </div>
             )}
           </form>
-        </div>
+        </div>}
 
         {/* Category buttons (and, on phones, the layout selector) */}
         <div className="mb-6">
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${leading ? 'max-md:flex-col max-md:items-stretch md:gap-4' : ''}`}>
+            {leading && <div className="md:w-1/2 md:shrink-0 md:order-2">{leading}</div>}
             <div
               role="group"
               aria-label="Categorías"
-              className="flex flex-1 min-w-0 flex-nowrap items-center gap-2 overflow-x-auto -ml-3 pl-3 md:mx-0 md:pl-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className={`flex ${leading ? 'md:w-1/2 md:flex-none' : 'flex-1'} min-w-0 flex-nowrap items-center gap-2 overflow-x-auto -ml-3 pl-3 md:mx-0 md:pl-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
             >
               {[{ id: 'all', label: 'Todas' }, ...categories].map((c) => {
                 const active = category === c.id;
@@ -406,7 +408,7 @@ const activeFilters =
                     onClick={() => change(setCategory)(c.id)}
                     aria-pressed={active}
                     className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs font-medium transition-colors ${
-                      active ? 'bg-[#2E7D32] text-white' : 'bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]'
+                      active ? 'bg-[#2E7D32] text-white' : `${soft} text-[#1D1D1F] hover:bg-[#F5F5F7]`
                     }`}
                   >
                     {c.label}
@@ -414,7 +416,7 @@ const activeFilters =
                 );
               })}
             </div>
-            <div role="group" aria-label="Diseño de la lista" className="md:hidden shrink-0 inline-flex rounded-full bg-white p-0.5">
+            <div role="group" aria-label="Diseño de la lista" className={`md:hidden shrink-0 inline-flex rounded-full ${soft} p-0.5`}>
               {([
                 ['one', Square, '1 columna'],
                 ['two', LayoutGrid, '2 columnas'],
@@ -451,7 +453,7 @@ const activeFilters =
             const sectionLabel = (p: { type?: string | null; typeLabel?: string | null }) =>
               p.typeLabel ?? typeLabels[p.type as string] ?? p.type ?? 'Otros';
             const sectionHeading =
-              idx === 0 || visible[idx - 1].type !== prop.type ? (
+              !embedded && (idx === 0 || visible[idx - 1].type !== prop.type) ? (
                 <h3 className="col-span-full mt-4 first:mt-0 md:mt-6 text-xl md:text-2xl font-semibold tracking-tight">{sectionLabel(prop)}</h3>
               ) : null;
                         const soldOut = prop.inStock === false;
@@ -514,7 +516,7 @@ const activeFilters =
             </div>
             </div>
             {layout === 'list' && (
-              <div className="md:hidden flex items-center gap-3 overflow-hidden rounded-2xl bg-white border border-[#000000]/5 pr-2.5">
+              <div className={`md:hidden flex items-center gap-3 overflow-hidden rounded-2xl ${soft} border border-[#000000]/5 pr-2.5`}>
                 {prop.href ? (
                   <Link
                     href={prop.href}
@@ -572,7 +574,7 @@ const activeFilters =
               type="button"
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className="h-11 px-4 rounded-full bg-white text-sm font-medium hover:bg-[#F5F5F7] disabled:opacity-40 transition-colors"
+              className={`h-11 px-4 rounded-full ${soft} text-sm font-medium hover:bg-[#F5F5F7] disabled:opacity-40 transition-colors`}
             >
               ← Anterior
             </button>
@@ -587,7 +589,7 @@ const activeFilters =
                   aria-label={`Página ${n}`}
                   aria-current={n === currentPage ? 'page' : undefined}
                   className={`h-11 min-w-11 px-3 rounded-full text-sm font-medium transition-colors ${
-                    n === currentPage ? 'bg-[#2E7D32] text-white' : 'bg-white hover:bg-[#F5F5F7]'
+                    n === currentPage ? 'bg-[#2E7D32] text-white' : `${soft} hover:bg-[#F5F5F7]`
                   }`}
                 >
                   {n}
@@ -598,14 +600,14 @@ const activeFilters =
               type="button"
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="h-11 px-4 rounded-full bg-white text-sm font-medium hover:bg-[#F5F5F7] disabled:opacity-40 transition-colors"
+              className={`h-11 px-4 rounded-full ${soft} text-sm font-medium hover:bg-[#F5F5F7] disabled:opacity-40 transition-colors`}
             >
               Siguiente →
             </button>
           </nav>
         )}
 
-        {filtered.length > 0 && (
+        {!embedded && filtered.length > 0 && (
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm">
             <Link href="/" className="justify-self-center md:justify-self-start font-medium text-[#1D1D1F] hover:text-[#515154] transition-colors">
               ← Volver al inicio
@@ -617,9 +619,9 @@ const activeFilters =
         )}
       </section>
 
-      <InfoSections />
+      {!embedded && <InfoSections />}
 
-      <SiteFooter />
+      {!embedded && <SiteFooter />}
     </div>
   );
 }
