@@ -6,7 +6,7 @@ import { KeyRound } from 'lucide-react';
 /** Event that WholesaleAccess listens to, so any page can open the client sign-in modal. */
 export const OPEN_CLIENT_LOGIN = 'merkado:open-client-login';
 
-/** Shown instead of the order form: Fresco is B2B, so only customers with a profile can order. */
+/** Shown instead of the order form: the catalog is B2B, so only customers with a profile can order. */
 export default function SignInNotice() {
   return (
     <div role="note" className="rounded-2xl bg-[#F5F5F7] px-5 py-4 text-sm space-y-3">
@@ -17,7 +17,7 @@ export default function SignInNotice() {
           <Link href="/#contact" className="font-medium text-[#1D1D1F] underline underline-offset-2 hover:text-[#2E7D32]">
             Solicitá tu acceso aquí
           </Link>
-          . Tras la aprobación y la configuración del pago, Fresco te envía tu contraseña.
+          . Tras la aprobación y la configuración del pago, te enviamos tu contraseña.
         </p>
         <p className="text-[#515154] font-light">
           Al ingresar, el precio se actualiza según el nivel de precios de tu cuenta.

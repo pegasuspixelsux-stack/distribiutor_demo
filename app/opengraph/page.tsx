@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Check } from 'lucide-react';
 import SiteFooter from '@/src/components/SiteFooter';
-import { SHARE_DESCRIPTION, SHARE_IMAGE, SHARE_IMAGE_ALT, SHARE_IMAGE_HEIGHT, SHARE_IMAGE_WIDTH, SHARE_TITLE } from '@/src/lib/siteMeta';
+import { getBusinessSettings } from '@/src/services/businessService';
+import { brandOf, SHARE_DESCRIPTION, SHARE_IMAGE, SHARE_IMAGE_ALT, SHARE_IMAGE_HEIGHT, SHARE_IMAGE_WIDTH, SHARE_TITLE } from '@/src/lib/siteMeta';
 
 // Link preview (WhatsApp, Facebook, LinkedIn): rendered on the server so the crawler, which does not run JavaScript, sees it.
 // The text and the screenshot (2400x1260, ~140 KB, well under WhatsApp's 600 KB limit) live in src/lib/siteMeta.ts.
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/opengraph',
-    siteName: 'Fresco',
     title: SHARE_TITLE,
     description: SHARE_DESCRIPTION,
     images: [{ url: SHARE_IMAGE, width: SHARE_IMAGE_WIDTH, height: SHARE_IMAGE_HEIGHT, alt: SHARE_IMAGE_ALT, type: 'image/jpeg' }],
@@ -31,11 +31,13 @@ const benefits = [
 ];
 
 /**
- * Open Graph page, used as a flyer (shared on WhatsApp): it sells the Fresco app to produce distributors.
+ * Open Graph page, used as a flyer (shared on WhatsApp): it sells the ordering app to produce distributors.
  * A green full-screen (100vh) hero. Desktop: two columns, the pitch on the left and the catalog on a phone on the right.
  * Phone: one column, with the top of the catalog phone peeking in at the bottom so everything fits one screen.
  */
-export default function OpenGraphPage() {
+export default async function OpenGraphPage() {
+  const business = await getBusinessSettings();
+  const brand = brandOf(business);
   return (
     <div className="bg-[var(--brand-bg,#2E7D32)] text-white font-sans antialiased">
       {/* Hero: on a phone one tall column; from lg up a 1440 x 1440 px SQUARE with square corners, centered (it is the flyer
@@ -45,8 +47,12 @@ export default function OpenGraphPage() {
           <div className="w-full lg:h-full max-w-[1280px] lg:max-w-none mx-auto px-6 md:px-10 lg:px-[11cqw] pt-8 lg:py-[11cqw] grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_39.4cqw] gap-6 lg:gap-[2.5cqw] items-center">
             {/* Left column: logo, heading, support text, benefits */}
             <div className="lg:h-full lg:flex lg:flex-col lg:justify-center lg:gap-[5.2cqw]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/fresco_footer_white.png" alt="Fresco, desde 1998" className="h-12 lg:h-[10.9cqw] w-auto self-start drop-shadow-lg" />
+              {business.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={business.logo} alt={brand} className="h-12 lg:h-[10.9cqw] w-auto self-start object-contain drop-shadow-lg" />
+              ) : (
+                <p className="text-2xl lg:text-[3.2cqw] font-semibold tracking-tight drop-shadow-lg">{brand}</p>
+              )}
               <div>
               <h1 className="mt-4 lg:mt-0 text-[clamp(1.5rem,6.4vw,3rem)] lg:text-[3.8cqw] font-semibold tracking-tight leading-[1.1] lg:leading-[1.02]">
                 <span className="block whitespace-nowrap">La app de pedidos</span>
@@ -74,7 +80,7 @@ export default function OpenGraphPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/catalog-screen.webp"
-                  alt="Pantalla del catálogo de Fresco: búsqueda, categorías y productos con precio"
+                  alt="Pantalla del catálogo: búsqueda, categorías y productos con precio"
                   width={720}
                   height={1440}
                   className="block w-full h-auto rounded-[2rem] lg:rounded-[2.4cqw]"

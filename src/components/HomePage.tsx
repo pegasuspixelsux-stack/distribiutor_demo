@@ -8,7 +8,6 @@ import { typeLabels } from '@/src/utils/format';
 import SiteFooter from '@/src/components/SiteFooter';
 import InfoSections from '@/src/components/InfoSections';
 import SimilarItems from '@/src/components/SimilarItems';
-import FitText from '@/src/components/FitText';
 import InstallButton from '@/src/components/InstallButton';
 import SearchModal from '@/src/components/SearchModal';
 import { toBestSellers } from '@/src/utils/bestSellers';
@@ -45,7 +44,7 @@ const HERO_BTN_PRIMARY =
 const HERO_BTN_SECONDARY =
   `${HERO_BTN_BASE} border-2 border-white bg-transparent text-white shadow-md shadow-black/25 hover:bg-white hover:text-[#14532D] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-white/30 active:bg-white/90`;
 
-export default function FrescoHome({
+export default function HomePage({
   initialProperties = [],
 }: {
   /** Active products loaded on the server from the database. */
@@ -132,53 +131,27 @@ export default function FrescoHome({
       </header>
         <section data-home-hero className="relative w-full max-md:h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:h-[80svh] md:min-h-[480px] md:pt-12 md:pb-24">
           {/* Background photo + green overlay: phones get one flat, fully opaque green layer; wider screens get a gradient, solid on the left (behind the text) and more transparent to the right */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-[position:50%_75%] hidden md:block"
-            style={{
-              backgroundImage:
-                'url(/verdi_fruts.webp)',
-            }}
-          />
-          <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: 'url(/verdi_fruts.webp)' }} />
+          {business.heroImage && (
+            <>
+              <div aria-hidden="true" className="absolute inset-0 bg-cover bg-[position:50%_75%] hidden md:block" style={{ backgroundImage: `url(${JSON.stringify(business.heroImage)})` }} />
+              <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: `url(${JSON.stringify(business.heroImage)})` }} />
+            </>
+          )}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-transparent bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.4)_40%,transparent_75%)]"
           />
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(2.5rem,calc((100%-1440px)/2+4rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-[max(12px,env(safe-area-inset-bottom))] pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] flex flex-col items-center text-center md:pt-9 md:pb-9 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7">
-            <span className="max-md:hidden block w-fit max-md:mt-0 md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
-              {business.heroEyebrow || 'Distribución hortifrutícola B2B'}
-            </span>
-            {business.heroHeading ? (
-              <h1 className={HERO_HEADING_CLASS}>{business.heroHeading}</h1>
-            ) : (
-              <h1 className={HERO_HEADING_CLASS}>
-                {/* Phones: 3 rows, each scaled to the width of the buttons */}
-                <span className="block md:hidden">
-                  {['Venta de Frutas y', 'Verduras Frescas', 'Directo de La Quinta'].map((line) => (
-                    <FitText key={line} as="span" className="block w-full" min={16} max={44}>
-                      {line}
-                    </FitText>
-                  ))}
-                </span>
-                {/* Desktop: 2 rows of equal width (the shorter row is justified to the longer one) */}
-                <span className="max-md:hidden block w-fit mx-auto">
-                  <span className="block [text-align-last:justify]">Venta de Frutas y Verduras</span>
-                  <span className="block [text-align-last:justify]">Frescas Directo de La Quinta</span>
-                </span>
-              </h1>
+            {business.heroEyebrow && (
+              <span className="max-md:hidden block w-fit max-md:mt-0 md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
+                {business.heroEyebrow}
+              </span>
             )}
-            {business.heroText ? (
-              <p className={HERO_TEXT_CLASS}>{business.heroText}</p>
-            ) : (
-              <p className={HERO_TEXT_CLASS}>
-                {/* Phones: each of the 2 rows is scaled to the width of the buttons */}
-                {['De pequeña familia productora y vecinos!', 'Emprendimiento familiar de Punta Espinillo.'].map((line) => (
-                  <FitText key={line} as="span" className="block w-full" min={11} max={22}>
-                    {line}
-                  </FitText>
-                ))}
-              </p>
+            {business.heroHeading && (
+              <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line`}>{business.heroHeading}</h1>
+            )}
+            {business.heroText && (
+              <p className={`${HERO_TEXT_CLASS} whitespace-pre-line`}>{business.heroText}</p>
             )}
             <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-6 flex flex-col sm:flex-row gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full max-md:max-w-sm">
               {client && level ? (

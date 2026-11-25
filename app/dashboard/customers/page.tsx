@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Copy, KeyRound, MessageCircle, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { useAuth } from '@/src/context/AuthContext';
+import { useBusiness } from '@/src/context/BusinessContext';
+import { brandOf } from '@/src/lib/siteMeta';
 import { useClients, usePriceLevels } from '@/src/hooks/usePricing';
 import {
   accessLink,
@@ -28,6 +30,7 @@ const waNumber = (phone: string) => {
 
 export default function CustomersPage() {
   const { agent } = useAuth();
+  const brand = brandOf(useBusiness());
   const { clients, loading, error } = useClients();
   const [search, setSearch] = useState('');
   const norm = (v: string) => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -144,7 +147,7 @@ export default function CustomersPage() {
   const code = access ? codeOfToken(access.token) : '';
   const copy = (text: string) => void navigator.clipboard?.writeText(text);
   const whatsappText = access
-    ? `Hola${access.contact ? ` ${access.contact}` : ''}, este es tu acceso a Fresco para ver tus precios mayoristas: ${link}\nTambién podés ingresar con “Acceso mayoristas” usando tu teléfono y esta contraseña: ${code}${access.pin ? `
+    ? `Hola${access.contact ? ` ${access.contact}` : ''}, este es tu acceso a ${brand} para ver tus precios mayoristas: ${link}\nTambién podés ingresar con “Acceso mayoristas” usando tu teléfono y esta contraseña: ${code}${access.pin ? `
 O con tu PIN de 4 números: ${access.pin}` : ''}`
     : '';
 

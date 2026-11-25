@@ -4,7 +4,7 @@ import { loadHomeData } from '@/src/lib/homeData';
 
 export const metadata: Metadata = {
   title: 'Catálogo Mayorista',
-  description: 'Buscá y filtrá todo el catálogo de frutas, verduras y hojas verdes de Fresco.',
+  description: 'Buscá y filtrá todo el catálogo de frutas, verduras y hojas verdes.',
 };
 
 // Same cache window as the homepage.

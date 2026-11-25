@@ -6,6 +6,7 @@ import { useBusiness } from '@/src/context/BusinessContext';
 import { useCategories } from '@/src/hooks/useCategories';
 import { socialLinks } from '@/src/components/SocialIcons';
 import { whatsappUrl } from '@/src/utils/format';
+import { brandOf } from '@/src/lib/siteMeta';
 
 const linkClass = 'hover:text-black hover:underline underline-offset-2 transition-colors';
 
@@ -24,13 +25,14 @@ export default function SiteFooter({ onGreen = true }: { onGreen?: boolean } = {
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-12 mb-[75px]">
         {/* Column 1: Brand (tablets, portrait and landscape: its own full-width row) */}
         <div className="space-y-4 md:col-span-2 xl:col-span-1">
-          {/* Fresco logo (already includes the name and "Desde 1998"): colored on white, white on the green mobile footer */}
+          {/* Brand: the logo uploaded in Ajustes, or the business name as a title when there is none */}
           <div className="flex items-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/fresco_footer.png" alt="" aria-hidden="true" className={`h-auto w-44 max-md:h-11 max-md:w-auto shrink-0 ${onGreen ? 'max-md:hidden' : ''}`} />
-            {onGreen && (
+            {business.logo ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src="/fresco_footer_white.png" alt="" aria-hidden="true" className="md:hidden h-11 w-auto shrink-0" />
+              <img src={business.logo} alt="" aria-hidden="true" className="h-auto w-44 max-h-24 max-md:h-11 max-md:w-auto object-contain object-left shrink-0" />
+            ) : (
+              // No logo: the business name from Ajustes as the title (white on the green mobile footer via .on-green).
+              <p className="text-xl font-semibold tracking-tight text-[#1D1D1F]">{brandOf(business)}</p>
             )}
           </div>
 
@@ -133,7 +135,7 @@ export default function SiteFooter({ onGreen = true }: { onGreen?: boolean } = {
 
       {/* Bottom Bar */}
       <div className="max-w-[1440px] mx-auto pt-6 border-t border-black/10 flex flex-col md:flex-row items-center justify-between text-sm md:text-xs text-[#515154] font-light">
-        <p>&copy; {new Date().getFullYear()} Fresco. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} {brandOf(business)}. Todos los derechos reservados.</p>
         <p className="mt-4 md:mt-0">
           Plataforma creada por{' '}
           <a

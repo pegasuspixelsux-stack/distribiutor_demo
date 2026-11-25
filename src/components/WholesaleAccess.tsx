@@ -14,8 +14,8 @@ const fieldClass =
 const PHONE_KEY = 'merkado:remembered-phone';
 
 const errors: Record<Exclude<TokenResult, 'ok'>, string> = {
-  invalid: 'El teléfono o la contraseña/PIN no coinciden. Revisalos o pedile tu acceso a Fresco.',
-  suspended: 'Tu cuenta está suspendida. Comunicate con Fresco para reactivarla.',
+  invalid: 'El teléfono o la contraseña/PIN no coinciden. Revisalos o pedile tu acceso a tu distribuidor.',
+  suspended: 'Tu cuenta está suspendida. Comunicate con tu distribuidor para reactivarla.',
   error: 'No pudimos verificar tus datos. Revisá tu conexión y probá de nuevo.',
 };
 

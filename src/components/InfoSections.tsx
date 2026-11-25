@@ -25,7 +25,7 @@ const ORDER_BENEFITS: { title: string; who: string; text: string }[] = [
 
 const FAQ: { q: string; a: string }[] = [
   {
-    q: '¿Quiénes pueden comprar en Fresco?',
+    q: '¿Quiénes pueden comprar?',
     a: 'Vendemos solo a empresas: restaurantes, hoteles, pizzerías, almacenes, comercios y servicios de catering. Para ver tus precios y hacer pedidos necesitás una cuenta aprobada.',
   },
   {
@@ -169,7 +169,7 @@ export default function InfoSections() {
               Insumos frescos para tu cocina, todos los días.
             </p>
             <p className="text-[#515154] font-light leading-relaxed">
-              En Fresco somos especialistas en la distribución hortifrutícola para el sector
+              Somos especialistas en la distribución hortifrutícola para el sector
               gastronómico y comercial. Seleccionamos frutas, verduras y hojas verdes directamente
               en el mercado y las llevamos a la puerta de tu establecimiento con entregas en el
               día o en 24 horas.
@@ -262,7 +262,7 @@ export default function InfoSections() {
               necesitás cada semana y revisamos tu solicitud y, una vez aprobada y configurada la forma de pago, te enviamos tu contraseña de acceso para ver tus precios y hacer tus pedidos.
             </p>
             <div className="mt-10 pt-8 border-t border-[#000000]/10">
-              <h3 className="text-lg font-semibold tracking-tight mb-5">Por qué usar el sistema de pedidos de Fresco</h3>
+              <h3 className="text-lg font-semibold tracking-tight mb-5">Por qué usar nuestro sistema de pedidos</h3>
               <ul className="space-y-5">
                 {ORDER_BENEFITS.map((b) => (
                   <li key={b.title} className="flex gap-3.5">

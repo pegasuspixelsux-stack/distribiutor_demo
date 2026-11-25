@@ -1,5 +1,6 @@
 'use client';
 
+import { brandOf } from '@/src/lib/siteMeta';
 import { useEffect, useMemo, useState } from 'react';
 import { ClipboardCopy, Printer } from 'lucide-react';
 import { useLeads } from '@/src/hooks/useLeads';
@@ -219,7 +220,7 @@ export default function DailyOrder() {
   .notes pre{white-space:pre-wrap;font:inherit;margin:0}
   .foot{margin-top:14px;color:#555;font-size:11px}
 </style></head><body>
-<div class="top"><div><h1>${esc(business.businessName || 'Fresco')} — Pedido al mercado</h1><div class="sub">${esc(prettyDate)}${business.rut ? ` · RUT ${esc(business.rut)}` : ''}</div></div>
+<div class="top"><div><h1>${esc(brandOf(business))} — Pedido al mercado</h1><div class="sub">${esc(prettyDate)}${business.rut ? ` · RUT ${esc(business.rut)}` : ''}</div></div>
 <div style="text-align:right">Operador: <b>${esc(agent?.name || '—')}</b><br>${orders.length} pedidos · ${clientCount} clientes</div></div>
 <table><thead><tr><th class="r">#</th><th>Producto</th><th class="r">Cantidad</th><th>Unidad</th><th>Equivale a</th><th>Ok</th></tr></thead><tbody>${body}</tbody></table>
 <p class="tot">${rows.length} productos${boxes ? ` · ${boxes} cajas en total` : ''}</p>

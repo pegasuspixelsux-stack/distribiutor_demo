@@ -208,7 +208,7 @@ service cloud.firestore {
       allow read: if true;
       allow create, update: if isAdmin()
         && id == 'business'
-        && request.resource.data.keys().hasOnly(['businessName', 'address', 'email', 'whatsapp', 'phone', 'rut', 'license', 'hours', 'instagram', 'facebook', 'youtube', 'logo', 'heroLogo', 'heroTitle', 'heroSlogan', 'heroEyebrow', 'heroHeading', 'heroText', 'backgroundColor', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['businessName', 'address', 'email', 'whatsapp', 'phone', 'rut', 'license', 'hours', 'instagram', 'facebook', 'youtube', 'logo', 'heroLogo', 'heroImage', 'heroTitle', 'heroSlogan', 'heroEyebrow', 'heroHeading', 'heroText', 'backgroundColor', 'updatedAt'])
         && request.resource.data.businessName is string && request.resource.data.businessName.size() <= 120
         && request.resource.data.address is string && request.resource.data.address.size() <= 200
         && request.resource.data.email is string && request.resource.data.email.size() <= 200
@@ -222,6 +222,7 @@ service cloud.firestore {
         && request.resource.data.youtube is string && request.resource.data.youtube.size() <= 200
         && request.resource.data.logo is string && request.resource.data.logo.size() <= 500
         && request.resource.data.heroLogo is string && request.resource.data.heroLogo.size() <= 500
+        && (!('heroImage' in request.resource.data) || (request.resource.data.heroImage is string && request.resource.data.heroImage.size() <= 500))
         && request.resource.data.heroTitle is string && request.resource.data.heroTitle.size() <= 60
         && request.resource.data.heroSlogan is string && request.resource.data.heroSlogan.size() <= 100
         && request.resource.data.heroEyebrow is string && request.resource.data.heroEyebrow.size() <= 80

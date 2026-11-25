@@ -7,8 +7,8 @@ import { useClient, type TokenResult } from '@/src/context/ClientContext';
 import BrandName from '@/src/components/BrandName';
 
 const messages: Record<Exclude<TokenResult, 'ok'>, string> = {
-  invalid: 'Este enlace no es válido o ya fue reemplazado. Pedile uno nuevo a Fresco.',
-  suspended: 'Tu cuenta está suspendida. Comunicate con Fresco para reactivarla.',
+  invalid: 'Este enlace no es válido o ya fue reemplazado. Pedile uno nuevo a tu distribuidor.',
+  suspended: 'Tu cuenta está suspendida. Comunicate con tu distribuidor para reactivarla.',
   error: 'No pudimos verificar tu enlace. Revisá tu conexión y probá de nuevo.',
 };
 

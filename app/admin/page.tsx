@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Inbox, LogOut, Users } from 'lucide-react';
 import { useAuth } from '@/src/context/AuthContext';
+import BrandName from '@/src/components/BrandName';
 import RequireAuth from '@/src/components/RequireAuth';
 import LeadsPanel from './_components/leads-panel';
 import UsersPanel from './_components/users-panel';
@@ -36,7 +37,7 @@ function Dashboard() {
       <header className="bg-white border-b border-[#000000]/5">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/" className="font-semibold tracking-tight">Fresco.</Link>
+            <Link href="/" className="font-semibold tracking-tight"><BrandName /></Link>
             <span className="text-xs text-[#515154] uppercase tracking-widest">Panel</span>
           </div>
           <div className="flex items-center gap-4 text-sm">

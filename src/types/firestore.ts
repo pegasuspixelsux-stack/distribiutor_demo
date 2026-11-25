@@ -1,5 +1,5 @@
 /**
- * Firestore data models for Fresco.
+ * Firestore data models.
  *
  * Collections:
  *   users/{uid}       -> Agent      (document id = Firebase Auth uid)
@@ -278,19 +278,21 @@ export interface BusinessSettings {
   instagram: string;
   facebook: string;
   youtube: string;
-  /** Logo shown next to the name in the header and footer (image URL); empty = the default Fresco logo. */
+  /** Logo shown next to the name in the header and footer (image URL); empty = the business name is shown as a text title. */
   logo: string;
   /** Image for the homepage hero (empty = same as `logo`). */
   heroLogo: string;
-  /** Title under the hero logo (empty = "FRESCO"). */
+  /** Background photo of the homepage hero (image URL; empty = plain brand color). */
+  heroImage: string;
+  /** Title under the hero logo (empty = default). */
   heroTitle: string;
-  /** Slogan under the hero title (empty = "Desde 1998"). */
+  /** Slogan under the hero title (empty = default). */
   heroSlogan: string;
-  /** Small pill above the hero heading (empty = default). */
+  /** Small pill above the hero heading (empty = not shown). */
   heroEyebrow: string;
-  /** Hero heading (empty = default). */
+  /** Hero heading (empty = not shown). */
   heroHeading: string;
-  /** Paragraph under the hero heading (empty = default). */
+  /** Paragraph under the hero heading (empty = not shown). */
   heroText: string;
   /** Brand / background color on phones, hex like #2E7D32 (empty = default green). */
   backgroundColor: string;
@@ -310,6 +312,7 @@ export const emptyBusiness: BusinessSettings = {
   youtube: '',
   logo: '',
   heroLogo: '',
+  heroImage: '',
   heroTitle: '',
   heroSlogan: '',
   heroEyebrow: '',

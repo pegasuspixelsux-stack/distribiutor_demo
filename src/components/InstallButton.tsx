@@ -79,7 +79,7 @@ export default function InstallButton({ className = '' }: { className?: string }
               <button type="button" onClick={() => setHelp(false)} aria-label="Cerrar" className="absolute top-3 right-3 p-2 rounded-full hover:bg-[#F5F5F7]">
                 <X className="w-4 h-4" />
               </button>
-              <h2 className="text-lg font-semibold tracking-tight">Agregar Fresco a tu pantalla de inicio</h2>
+              <h2 className="text-lg font-semibold tracking-tight">Agregar el catálogo a tu pantalla de inicio</h2>
               <ol className="mt-4 space-y-3 text-sm text-[#515154]">
                 <li className="flex items-start gap-3">
                   <Share className="w-5 h-5 shrink-0 text-[#2E7D32]" aria-hidden="true" />

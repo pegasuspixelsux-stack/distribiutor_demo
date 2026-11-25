@@ -21,6 +21,8 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useBusiness } from '../../context/BusinessContext';
+import { brandOf } from '../../lib/siteMeta';
 import { roleLabels } from '../../utils/format';
 import { useLeads } from '../../hooks/useLeads';
 import { groupOrders } from '../../utils/orders';
@@ -45,6 +47,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { agent, logout } = useAuth();
+  const business = useBusiness();
+  const brand = brandOf(business);
   const { leads, loading, error } = useLeads(100);
   const [menuOpen, setMenuOpen] = useState(false);
   const [inboxOpen, setInboxOpen] = useState(false);
@@ -62,9 +66,13 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
   const sidebar = (
     <div className="flex h-full flex-col">
       <div className="px-6 h-16 flex items-center justify-between shrink-0">
-        <Link href="/dashboard" aria-label="Fresco, inicio del panel" className="inline-flex items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/fresco_footer_white.png" alt="Fresco" className="h-11 w-auto" />
+        <Link href="/dashboard" aria-label={`${brand}, inicio del panel`} className="inline-flex items-center min-w-0">
+          {business.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={business.logo} alt={brand} className="h-11 w-auto max-w-40 object-contain" />
+          ) : (
+            <span className="truncate text-lg font-semibold tracking-tight text-white">{brand}</span>
+          )}
         </Link>
         <button
           onClick={() => setMenuOpen(false)}

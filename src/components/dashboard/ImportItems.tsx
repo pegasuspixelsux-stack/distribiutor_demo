@@ -85,7 +85,7 @@ export default function ImportItems({ onImported }: { onImported: () => void }) 
               </p>
             </div>
             <a
-              href="/fresco-items-sample.xlsx"
+              href="/items-sample.xlsx"
               download
               className="inline-flex items-center gap-2 text-xs font-medium px-4 py-2.5 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED]"
             >

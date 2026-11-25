@@ -21,6 +21,7 @@ export function toBusiness(d: Record<string, unknown> | undefined): BusinessSett
     youtube: clip(d?.youtube, 200),
     logo: clip(d?.logo, 500),
     heroLogo: clip(d?.heroLogo, 500),
+    heroImage: clip(d?.heroImage, 500),
     heroTitle: clip(d?.heroTitle, 60),
     heroSlogan: clip(d?.heroSlogan, 100),
     heroEyebrow: clip(d?.heroEyebrow, 80),

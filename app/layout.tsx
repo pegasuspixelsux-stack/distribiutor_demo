@@ -39,11 +39,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const name = businessName || DEFAULT_TITLE;
   return {
     metadataBase: new URL(SITE_URL),
-    title: { default: name, template: "%s | Fresco" },
+    title: { default: name, template: `%s | ${name}` },
     description: DEFAULT_DESCRIPTION,
-    applicationName: "Fresco",
+    applicationName: name,
     keywords: [
-      "Fresco",
       "frutas y verduras",
       "distribuidor hortifrutícola",
       "mayorista",
@@ -53,15 +52,15 @@ export async function generateMetadata(): Promise<Metadata> {
       "restaurantes",
       "hoteles",
     ],
-    authors: [{ name: "Fresco" }],
-    creator: "Fresco",
-    publisher: "Fresco",
+    authors: [{ name }],
+    creator: name,
+    publisher: name,
     category: "food",
     // Link preview (WhatsApp, Facebook, X): the flyer's text and a screenshot of /opengraph. Pages with their own
     // image (each product) override it.
     openGraph: {
       type: "website",
-      siteName: "Fresco",
+      siteName: name,
       title: SHARE_TITLE,
       description: SHARE_DESCRIPTION,
       locale: "es_UY",
@@ -73,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: SHARE_DESCRIPTION,
       images: [SHARE_IMAGE],
     },
-    appleWebApp: { capable: true, title: "Fresco", statusBarStyle: "default" },
+    appleWebApp: { capable: true, title: name, statusBarStyle: "default" },
     formatDetection: { telephone: false },
   };
 }

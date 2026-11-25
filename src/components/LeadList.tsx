@@ -6,6 +6,8 @@ import OrderModal, { orderStatusLabels, orderStatusStyles } from './dashboard/Or
 import { getProperty, updateLeadStatus } from '../services/dbService';
 import type { Lead, LeadStatus } from '../types/firestore';
 import { formatMoney, timeAgo, whatsappUrl } from '../utils/format';
+import { useBusiness } from '../context/BusinessContext';
+import { brandOf } from '../lib/siteMeta';
 import { groupOrders, orderNumberOf, orderTotal, type OrderGroup } from '../utils/orders';
 
 const statuses: { value: LeadStatus; label: string }[] = (['new', 'contacted', 'closed', 'completed'] as const).map((value) => ({
@@ -62,6 +64,7 @@ export default function LeadList({ leads, agentName, emptyText = 'Todavía no ha
   const [error, setError] = useState<string | null>(null);
   const [openKey, setOpenKey] = useState<string | null>(null);
   const groups = groupOrders(leads);
+  const brand = brandOf(useBusiness());
   const openGroup = groups.find((g) => g.key === openKey) ?? null;
 
   const setStatus = async (group: OrderGroup, status: LeadStatus) => {
@@ -91,7 +94,7 @@ export default function LeadList({ leads, agentName, emptyText = 'Todavía no ha
           const total = orderTotal(group.lines);
           const firstName = lead.clientName.split(' ')[0];
           const text =
-            `Hola${firstName ? ` ${firstName}` : ''}, te escribe ${agentName || 'tu asesor/a'} de Fresco. ` +
+            `Hola${firstName ? ` ${firstName}` : ''}, te escribe ${agentName || 'tu asesor/a'} de ${brand}. ` +
             `Gracias por tu pedido ${orderNumberOf(group)}. ¿Cuándo te queda bien que hablemos?`;
           const wa = lead.phone ? whatsappUrl(lead.phone, text) : null;
           const notes = deliveryNotes(lead.message);
