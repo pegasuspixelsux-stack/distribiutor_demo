@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { HomeProperty } from '@/src/lib/homeData';
 import { typeLabels } from '@/src/utils/format';
@@ -23,6 +24,7 @@ import {
   ArrowUpRight,
   KeyRound,
   Search,
+  Star,
 } from 'lucide-react';
 import { useBusiness } from '@/src/context/BusinessContext';
 import { brandOf } from '@/src/lib/siteMeta';
@@ -31,11 +33,15 @@ import { brandOf } from '@/src/lib/siteMeta';
 
 
 
+/** Google reviews shown at the top of the hero. Fill in the business's real rating (e.g. 4.8) and review count; while null only the stars and "Google" show. */
+const GOOGLE_RATING: number | null = null;
+const GOOGLE_REVIEW_COUNT: number | null = null;
+
 /** Hero heading / subheading styles: on phones both are as wide as the buttons (max-w-sm). */
 const HERO_HEADING_CLASS =
-  'mt-4 max-md:mt-0 max-w-6xl max-md:text-center max-md:w-full max-md:max-w-sm max-md:text-[clamp(18px,calc((100vw-40px)/10.5),36px)] max-md:leading-[1.1] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight leading-[1.1]';
+  'mt-4 max-md:mt-3 md:mt-3 max-w-6xl max-md:text-left max-md:w-full max-md:max-w-sm max-md:text-[clamp(16px,calc((100vw-40px)/13),30px)] max-md:leading-[1.1] sm:text-4xl md:text-[2.5rem] md:max-w-none md:text-balance xl:text-[2.75rem] font-semibold tracking-tight leading-[1.1]';
 const HERO_TEXT_CLASS =
-  'mt-4 max-md:mt-1.5 md:mt-3 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-center text-[17px] max-md:text-[15px] max-md:leading-[1.35] max-md:tracking-[-0.022em] md:text-base text-white/95 font-normal leading-relaxed';
+  'mt-4 max-md:mt-1.5 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[15px] max-md:leading-[1.35] max-md:tracking-[-0.022em] md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
 
 /** Hero buttons: dark-to-light green vertical gradient (primary) and a white outline (secondary), both with hover and press effects. */
 const HERO_BTN_BASE =
@@ -91,7 +97,7 @@ export default function HomePage({
           scrolled ? 'bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_72%,transparent)]' : 'bg-transparent'
         }`}
       >
-        <div className="bg-[#2E7D32] text-white text-center text-[11px] font-medium tracking-wide py-1.5 px-4 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))]">
+        <div className="bg-black text-white text-center text-[11px] font-medium tracking-wide py-1.5 px-4 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))]">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="h-14 px-3 flex items-center justify-between">
@@ -117,7 +123,7 @@ export default function HomePage({
       <div className="relative max-w-[1440px] mx-auto px-0 md:max-w-none md:px-0 pt-0">
       {/* --- NAVIGATION --- */}
       <header className="hidden md:block absolute inset-x-0 top-0 z-50 text-white [&_nav]:!text-white [&_nav_a:hover]:!text-white/80">
-        <div className="bg-[#2E7D32] text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
+        <div className="bg-black text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
@@ -130,21 +136,30 @@ export default function HomePage({
           </div>
         </div>
       </header>
-        <section data-home-hero className="relative w-full max-md:h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:h-[80svh] md:min-h-[480px] md:pt-12 md:pb-24">
-          {/* Background photo + green overlay: phones get one flat, fully opaque green layer; wider screens get a gradient, solid on the left (behind the text) and more transparent to the right */}
-          {business.heroImage && (
-            <>
-              <div aria-hidden="true" className="absolute inset-0 bg-cover bg-[position:50%_75%] hidden md:block" style={{ backgroundImage: `url(${JSON.stringify(business.heroImage)})` }} />
-              <div aria-hidden="true" className="absolute inset-0 bg-cover bg-center md:hidden" style={{ backgroundImage: `url(${JSON.stringify(business.heroImage)})` }} />
-            </>
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-transparent bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.4)_40%,transparent_75%)]"
-          />
-            <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(2.5rem,calc((100%-1440px)/2+4rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-[max(12px,env(safe-area-inset-bottom))] pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] flex flex-col items-center text-center md:pt-9 md:pb-9 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7">
+        <section data-home-hero className="relative w-full max-md:min-h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pb-6 max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:min-h-[max(80svh,480px)] md:pt-[5.75rem] md:pb-6">
+            <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-0 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
+            {/* Left column: eyebrow, heading, text, buttons, social proof */}
+            <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
+            {/* Google reviews, at the top of the text block (phones too) */}
+            <div className="mb-4 max-md:mb-3 max-md:self-center flex items-center gap-1.5 text-sm max-md:text-[13px] leading-snug">
+              <span className="font-semibold">Google</span>
+              <span
+                className="flex items-center gap-0.5 text-amber-300"
+                aria-label={GOOGLE_RATING ? `${GOOGLE_RATING} de 5 estrellas en Google` : 'Reseñas en Google'}
+              >
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 max-md:w-3.5 max-md:h-3.5 fill-current" />
+                ))}
+              </span>
+              {GOOGLE_RATING && (
+                <span className="font-semibold">
+                  {GOOGLE_RATING.toLocaleString('es-UY')}
+                  {GOOGLE_REVIEW_COUNT && <span className="font-normal text-white/80"> · {GOOGLE_REVIEW_COUNT} reseñas</span>}
+                </span>
+              )}
+            </div>
             {business.heroEyebrow && (
-              <span className="max-md:hidden block w-fit max-md:mt-0 md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
+              <span className="block w-fit max-md:mt-0 max-md:self-center md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
                 {business.heroEyebrow}
               </span>
             )}
@@ -154,7 +169,8 @@ export default function HomePage({
             {business.heroText && (
               <p className={`${HERO_TEXT_CLASS} whitespace-pre-line`}>{business.heroText}</p>
             )}
-            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-6 flex flex-col sm:flex-row gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full max-md:max-w-sm">
+            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full">
               {client && level ? (
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-2.5 max-md:w-full">
                   <Link
@@ -194,6 +210,34 @@ export default function HomePage({
                 <span>Solicitar acceso mayorista</span>
               </a>
               )}
+            </div>
+            {!(client && level) && (
+              <p className="mt-3 text-center text-xs text-white/80">
+                ¿Ya sos cliente?{' '}
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent(OPEN_CLIENT_LOGIN, { detail: { redirect: '/productos' } }))}
+                  className="font-semibold text-white underline underline-offset-2 hover:text-white/80"
+                >
+                  Entrar
+                </button>
+              </p>
+            )}
+            </div>
+            </div>
+
+            {/* Right column: iPhone mockup of the ordering app (transparent WebP, already tilted) */}
+            {/* Desktop only: 1.5x the fitted size, top-aligned with the text and running off the bottom of the hero (clipped under the catalog panel). */}
+            <div className="max-md:hidden relative self-stretch animate-slide-up [--slide-delay:150ms]">
+              <Image
+                src="/hero_image/mockup_demo.webp"
+                alt="App de pedidos mayoristas: catálogo de frutas y verduras"
+                width={301}
+                height={511}
+                sizes="480px"
+                priority
+                className="absolute left-[calc(50%-6rem)] top-0 -translate-x-1/2 h-[min(767px,calc((max(80svh,480px)-12rem)*1.5))] w-auto max-w-none drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
+              />
             </div>
           </div>
         </section>

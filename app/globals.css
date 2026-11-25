@@ -159,3 +159,23 @@ html {
     padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
   }
 }
+
+/* Homepage entrance: hero text, phone mockup and catalog panel slide up in turn (stagger via --slide-delay). */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--slide-delay, 0ms) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-up {
+    animation: none;
+  }
+}

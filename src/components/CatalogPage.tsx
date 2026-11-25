@@ -206,10 +206,10 @@ const activeFilters =
 
   const soft = embedded ? 'bg-[#F5F5F7]' : 'bg-white'; // controls sit on a white section when embedded
   return (
-    <div className={`${embedded ? 'bg-white rounded-t-3xl -mt-6 relative z-10' : 'min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)]'} text-[#1D1D1F] selection:bg-[#000000] selection:text-[#FFFFFF] font-sans antialiased`}>
+    <div className={`${embedded ? 'bg-white rounded-t-3xl -mt-6 relative z-10 animate-slide-up [--slide-delay:300ms]' : 'min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)]'} text-[#1D1D1F] selection:bg-[#000000] selection:text-[#FFFFFF] font-sans antialiased`}>
       {/* --- NAVIGATION --- */}
       {!embedded && <header className={`sticky top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${scrolled ? 'max-md:bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_80%,transparent)] md:bg-[#FBFBFD]/80 backdrop-blur-md' : 'bg-transparent'}`}>
-        <div className="bg-[#2E7D32] text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
+        <div className="bg-black text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">

@@ -100,7 +100,7 @@ export default async function ItemPage({ params }: Props) {
   return (
     <div className="relative min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)] text-[#1D1D1F] font-sans antialiased">
       <header className="absolute inset-x-0 top-0 z-30 text-white md:static md:text-[#1D1D1F] md:border-b md:border-[#000000]/5 md:bg-[#FBFBFD]">
-        <div className="bg-[#2E7D32] text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))] md:pt-1.5">
+        <div className="bg-black text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))] md:pt-1.5">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
