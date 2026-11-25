@@ -25,6 +25,7 @@ import {
   Search,
 } from 'lucide-react';
 import { useBusiness } from '@/src/context/BusinessContext';
+import { brandOf } from '@/src/lib/siteMeta';
 
 
 
@@ -94,7 +95,7 @@ export default function HomePage({
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="h-14 px-3 flex items-center justify-between">
-          <span className="pl-1 font-semibold text-lg tracking-tight text-white drop-shadow">Verdis Fruts</span>
+          <span className="pl-1 min-w-0 truncate font-semibold text-lg tracking-tight text-white drop-shadow">{brandOf(business)}</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -120,7 +121,7 @@ export default function HomePage({
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-semibold text-xl sm:text-2xl tracking-tight text-white">Verdis Fruts</span>
+          <span className="min-w-0 truncate max-w-md font-semibold text-xl sm:text-2xl tracking-tight text-white">{brandOf(business)}</span>
           <SiteNavLinks />
           <div className="flex items-center gap-1">
           <WholesaleAccess />
