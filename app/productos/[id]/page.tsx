@@ -108,8 +108,9 @@ export default async function ItemPage({ params }: Props) {
           <SiteNavLinks />
           <div className="flex items-center gap-3">
             <WholesaleAccess glass />
-            <CartButton glass />
-            <MobileNavMenu glass />
+            {/* Phones use the cart in the bottom bar; the nav keeps it on tablets and desktop only. */}
+            <span className="max-md:hidden contents"><CartButton glass /></span>
+            <MobileNavMenu bare />
           </div>
         </div>
       </header>

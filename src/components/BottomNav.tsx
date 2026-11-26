@@ -30,7 +30,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navegación de la app"
-      className="app-bottom-nav fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 gap-1 rounded-full border border-white/20 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_72%,transparent)] backdrop-blur-3xl backdrop-saturate-150 p-1.5 shadow-xl shadow-black/15"
+      className="app-bottom-nav fixed inset-x-3 bottom-[max(0.25rem,calc(env(safe-area-inset-bottom)-0.75rem))] z-40 gap-1 rounded-full border border-white/20 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_72%,transparent)] backdrop-blur-3xl backdrop-saturate-150 p-1.5 shadow-xl shadow-black/15"
     >
       <Link href="/" aria-label="Inicio" title="Inicio" className={tab(home)} aria-current={home ? 'page' : undefined}>
         <House className={icon(home)} aria-hidden="true" />

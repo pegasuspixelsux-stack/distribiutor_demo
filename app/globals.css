@@ -154,7 +154,7 @@ html {
   .app-bottom-nav {
     display: flex;
   }
-  /* keep the page's last content clear of the floating bar (60px bar + its 12px margin) */
+  /* keep the page's last content clear of the floating bar (60px bar + its small bottom margin) */
   body {
     padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
   }
