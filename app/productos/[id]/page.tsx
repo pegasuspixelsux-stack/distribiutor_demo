@@ -99,7 +99,7 @@ export default async function ItemPage({ params }: Props) {
 
   return (
     <div className="relative min-h-screen bg-[#FBFBFD] max-md:bg-[var(--brand-bg,#2E7D32)] text-[#1D1D1F] font-sans antialiased">
-      <header className="absolute inset-x-0 top-0 z-30 text-white md:static md:text-[#1D1D1F] md:border-b md:border-[#000000]/5 md:bg-[#FBFBFD]">
+      <header className="fixed inset-x-0 top-0 z-30 text-white max-md:bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_85%,transparent)] max-md:backdrop-blur-md max-md:backdrop-saturate-150 md:static md:text-[#1D1D1F] md:border-b md:border-[#000000]/5 md:bg-[#FBFBFD]">
         <div className="bg-black text-white text-center text-[11px] sm:text-xs font-medium tracking-wide py-1.5 px-4 sm:px-6 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))] md:pt-1.5">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
@@ -115,36 +115,36 @@ export default async function ItemPage({ params }: Props) {
         </div>
       </header>
 
-      <main className="max-md:bg-[#FBFBFD] max-w-[1440px] mx-auto px-6 pt-10 pb-0 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-16 items-start">
-        {/* Mobile hero: full-bleed image, vertical gradient overlay, product info on top of it */}
-        <SwipeSection prevHref={prevHref} nextHref={nextHref} className="md:hidden relative -mx-6 -mt-10 min-h-[100svh] flex flex-col justify-end overflow-hidden bg-[#FBFBFD]">
-          {photo && (
-            <PropertyImage
-              src={photo}
-              alt={item.title}
-              variant="gallery"
-              sizes="100vw"
-              priority
-              className={`object-cover ${inStock ? '' : 'opacity-50 grayscale'}`}
-            />
-          )}
-          <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_92%,transparent)] from-25% via-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_50%,transparent)] via-55% to-transparent" aria-hidden="true" />
-          <div className="absolute inset-x-0 top-0 -bottom-0.5 bg-gradient-to-t from-[#FBFBFD] from-22% via-[#FBFBFD]/95 via-36% to-transparent to-58%" aria-hidden="true" />
-          <Link
-            href="/productos"
-            className="absolute top-[6.75rem] left-4 z-10 inline-flex items-center gap-2 text-sm font-medium text-white bg-black/40 backdrop-blur px-3 py-1.5 rounded-full"
-          >
-            <ArrowLeft className="w-4 h-4" aria-hidden="true" /> Catálogo
-          </Link>
-          <FavoriteButton productId={String(item.id)} title={item.title} className="absolute top-[6.75rem] right-4 w-10 h-10 z-10" />
-          {!inStock && (
-            <span className="absolute top-32 left-4 z-10 bg-black/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-              Sin stock
-            </span>
-          )}
-          {prevHref && <HeroArrow dir="prev" href={prevHref} />}
-          {nextHref && <HeroArrow dir="next" href={nextHref} />}
-          <div className="relative z-10 px-6 pb-[12.5svh] pt-24 space-y-4 text-[#1D1D1F]">
+      <main className="max-md:bg-[#FBFBFD] max-md:mt-[calc(env(safe-area-inset-top)+5.75rem)] max-md:rounded-t-3xl max-w-[1440px] mx-auto px-6 pt-10 pb-0 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-16 items-start">
+        {/* Mobile: a white sheet with rounded top corners under the fixed green nav; the photo in a rounded box, product info below it */}
+        <SwipeSection prevHref={prevHref} nextHref={nextHref} className="md:hidden relative -mx-6 -mt-10 flex flex-col rounded-t-3xl bg-[#FBFBFD]">
+          <div className="relative mx-4 mt-4 aspect-square rounded-3xl overflow-hidden bg-[#E5E5EA] shadow-xl shadow-black/15">
+            {photo && (
+              <PropertyImage
+                src={photo}
+                alt={item.title}
+                variant="gallery"
+                sizes="100vw"
+                priority
+                className={`object-cover ${inStock ? '' : 'opacity-50 grayscale'}`}
+              />
+            )}
+            <Link
+              href="/productos"
+              className="absolute top-3 left-3 z-10 inline-flex items-center gap-2 text-sm font-medium text-white bg-black/40 backdrop-blur px-3 py-1.5 rounded-full"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" /> Catálogo
+            </Link>
+            <FavoriteButton productId={String(item.id)} title={item.title} className="absolute top-3 right-3 w-10 h-10 z-10" />
+            {!inStock && (
+              <span className="absolute bottom-3 left-3 z-10 bg-black/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                Sin stock
+              </span>
+            )}
+            {prevHref && <HeroArrow dir="prev" href={prevHref} />}
+            {nextHref && <HeroArrow dir="next" href={nextHref} />}
+          </div>
+          <div className="relative z-10 px-6 pt-6 pb-4 space-y-4 text-[#1D1D1F]">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 space-y-1">
                 <p className="text-xs uppercase tracking-widest text-[#515154] font-semibold">{category}</p>
@@ -168,7 +168,7 @@ export default async function ItemPage({ params }: Props) {
             />
           </div>
         </SwipeSection>
-        <div className="md:hidden relative z-10 -mt-[9svh]">
+        <div className="md:hidden relative z-10 pb-6">
           <BuyBox signInOnly itemId={isSample ? Number(id.replace('sample-', '')) : item.id} title={item.title} image={photo ?? ''} pricing={pricing} categoryId={item.type} inStock={inStock} />
         </div>
 
