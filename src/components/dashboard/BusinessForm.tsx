@@ -150,7 +150,7 @@ export default function BusinessForm() {
         <div>
           <label htmlFor="b-hero-heading" className={labelClass}>Título principal</label>
           <textarea id="b-hero-heading" rows={2} className={`${inputClass} resize-none`} value={form.heroHeading} disabled={!canEdit} maxLength={160} onChange={(e) => set('heroHeading', e.target.value)} placeholder={'Frutas y vegetales frescos con\nentrega directa en tu comercio.'} />
-          <p className="text-xs text-[#86868B] mt-1">Se muestra en computadora y celular. Cada línea es una fila; en el celular cada fila ocupa todo el ancho.</p>
+          <p className="text-xs text-[#86868B] mt-1">Se muestra en computadora y celular, en dos filas: escrito en una línea se divide solo; con Enter elegís dónde. En el celular cada fila ocupa todo el ancho.</p>
         </div>
         <div>
           <label htmlFor="b-hero-text" className={labelClass}>Texto de la portada</label>

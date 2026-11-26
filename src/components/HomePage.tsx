@@ -33,6 +33,21 @@ const DEFAULT_HERO_HEADING = 'Frutas y vegetales frescos con\nentrega directa en
 const DEFAULT_HERO_TEXT =
   'Tu tiempo es clave en la operación diaria. Armá tu pedido en segundos, revisá tu lista de precios y repetí tus pedidos frecuentes sin llamadas ni demoras.';
 
+/** Heading rows: the lines typed in Ajustes; a heading typed on one line is split into two rows at the space that makes them closest in length. */
+function toHeadingRows(heading: string): string[] {
+  const lines = heading.split('\n').map((r) => r.trim()).filter(Boolean);
+  if (lines.length !== 1) return lines;
+  const words = lines[0].split(/\s+/);
+  if (words.length < 2) return lines;
+  let best = 1;
+  let bestDiff = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const diff = Math.abs(words.slice(0, i).join(' ').length - words.slice(i).join(' ').length);
+    if (diff < bestDiff) { bestDiff = diff; best = i; }
+  }
+  return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+}
+
 /** Phones: each row of the heading on one line, its font sized so every row spans the full width (capped at maxPx). A single-row heading just wraps. */
 function FitRows({ rows, maxPx = 28 }: { rows: string[]; maxPx?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -96,7 +111,7 @@ export default function HomePage({
   const business = useBusiness();
   const heroHeading = business.heroHeading?.trim() || DEFAULT_HERO_HEADING;
   const heroText = business.heroText?.trim() || DEFAULT_HERO_TEXT;
-  const heroRows = useMemo(() => heroHeading.split('\n').map((r) => r.trim()).filter(Boolean), [heroHeading]);
+  const heroRows = useMemo(() => toHeadingRows(heroHeading), [heroHeading]);
   const router = useRouter();
   // Phone top nav: transparent over the hero, blurred and tinted once the page scrolls.
   const [scrolled, setScrolled] = useState(false);

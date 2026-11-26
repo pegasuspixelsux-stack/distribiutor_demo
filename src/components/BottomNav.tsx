@@ -8,7 +8,7 @@ import { useCart } from '@/src/context/CartContext';
 /**
  * Bottom navigation for phones: Inicio, Catálogo, Favoritos and Carrito, on every page (the CSS in globals.css shows it
  * below 768px only: `.app-bottom-nav`). It also covers the installed app (home-screen icon), which has no browser toolbar.
- * A floating rounded bar of icons; the current page is shown by a green icon, with no filled background.
+ * A floating rounded bar of white icons on blurred brand green; the current page's icon is full white and bolder, the others dimmed.
  */
 export default function BottomNav() {
   const pathname = usePathname();
@@ -16,7 +16,7 @@ export default function BottomNav() {
 
   const tab = (active: boolean) =>
     `relative flex flex-1 items-center justify-center min-h-11 rounded-full transition-colors duration-200 active:scale-90 ${
-      active ? 'text-[#2E7D32]' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+      active ? 'text-white' : 'text-white/70 hover:text-white'
     }`;
   const icon = (active: boolean) => `w-6 h-6 transition-transform duration-200 ${active ? 'scale-110 [stroke-width:2.4]' : ''}`;
 
@@ -30,7 +30,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navegación de la app"
-      className="app-bottom-nav fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 gap-1 rounded-full border border-[#000000]/10 bg-white/55 backdrop-blur-3xl backdrop-saturate-150 p-1.5 shadow-xl shadow-black/15"
+      className="app-bottom-nav fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 gap-1 rounded-full border border-white/20 bg-[color-mix(in_srgb,var(--brand-bg,#2E7D32)_72%,transparent)] backdrop-blur-3xl backdrop-saturate-150 p-1.5 shadow-xl shadow-black/15"
     >
       <Link href="/" aria-label="Inicio" title="Inicio" className={tab(home)} aria-current={home ? 'page' : undefined}>
         <House className={icon(home)} aria-hidden="true" />
@@ -51,7 +51,7 @@ export default function BottomNav() {
         <span className="relative">
           <ShoppingCart className={icon(false)} aria-hidden="true" />
           {count > 0 && (
-            <span className="absolute -top-2 -right-2.5 min-w-4 h-4 px-1 rounded-full bg-[#2E7D32] text-white text-[10px] font-semibold flex items-center justify-center">
+            <span className="absolute -top-2 -right-2.5 min-w-4 h-4 px-1 rounded-full bg-white text-[var(--brand-bg,#2E7D32)] text-[10px] font-semibold flex items-center justify-center">
               {count}
             </span>
           )}
