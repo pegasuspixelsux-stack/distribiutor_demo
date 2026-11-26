@@ -13,10 +13,6 @@ const BusinessContext = createContext<BusinessSettings>(emptyBusiness);
 export function BusinessProvider({ initial, children }: { initial: BusinessSettings; children: ReactNode }) {
   const [business, setBusiness] = useState(initial);
   useEffect(() => subscribeBusinessSettings(setBusiness), []);
-  // Keep the brand color in step with Ajustes without a reload.
-  useEffect(() => {
-    document.documentElement.style.setProperty('--brand-bg', business.backgroundColor || '#2E7D32');
-  }, [business.backgroundColor]);
   return <BusinessContext.Provider value={business}>{children}</BusinessContext.Provider>;
 }
 

@@ -1,4 +1,6 @@
 /** Shared site texts (used by the layout metadata and the /distribuidores promo page). */
+/** Background color of every page (phones), the hero, the nav when scrolling, the bottom bar and the browser bar. */
+export const SITE_BG = '#0B2A14';
 /** Brand shown when no business name is set in Ajustes. */
 export const SITE_TITLE = 'Catálogo Mayorista';
 /** The business name from Ajustes, or the neutral default. */

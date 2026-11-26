@@ -7,7 +7,7 @@ import { CartProvider } from "@/src/context/CartContext";
 import { BusinessProvider } from "@/src/context/BusinessContext";
 import { getBusinessSettings } from "@/src/services/businessService";
 import BottomNav from "@/src/components/BottomNav";
-import { SHARE_DESCRIPTION, SHARE_IMAGE, SHARE_IMAGE_ALT, SHARE_IMAGE_HEIGHT, SHARE_IMAGE_WIDTH, SHARE_TITLE, SITE_DESCRIPTION, SITE_TITLE } from "@/src/lib/siteMeta";
+import { SITE_BG, SHARE_DESCRIPTION, SHARE_IMAGE, SHARE_IMAGE_ALT, SHARE_IMAGE_HEIGHT, SHARE_IMAGE_WIDTH, SHARE_TITLE, SITE_DESCRIPTION, SITE_TITLE } from "@/src/lib/siteMeta";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,9 +21,8 @@ const geistMono = Geist_Mono({
 
 // Colors the browser toolbar / status bar (Safari, Chrome on phones).
 export async function generateViewport(): Promise<Viewport> {
-  const { backgroundColor } = await getBusinessSettings();
   // viewport-fit=cover lets the installed app use the whole screen; the pages add the safe-area padding themselves.
-  return { themeColor: backgroundColor || "#2E7D32", viewportFit: "cover" };
+  return { themeColor: SITE_BG, viewportFit: "cover" };
 }
 
 const DEFAULT_TITLE = SITE_TITLE;
@@ -83,7 +82,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es-UY"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      style={{ "--brand-bg": business.backgroundColor || "#2E7D32" } as CSSProperties}
+      style={{ "--brand-bg": SITE_BG } as CSSProperties}
     >
       <body className="min-h-full flex flex-col">
         <BusinessProvider initial={business}>

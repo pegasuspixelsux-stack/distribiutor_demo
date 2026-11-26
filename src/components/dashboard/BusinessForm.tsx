@@ -150,23 +150,12 @@ export default function BusinessForm() {
         <div>
           <label htmlFor="b-hero-heading" className={labelClass}>Título principal</label>
           <textarea id="b-hero-heading" rows={2} className={`${inputClass} resize-none`} value={form.heroHeading} disabled={!canEdit} maxLength={160} onChange={(e) => set('heroHeading', e.target.value)} placeholder={'Frutas y vegetales frescos con\nentrega directa en tu comercio.'} />
-          <p className="text-xs text-[#86868B] mt-1">Se muestra en computadora y celular, en dos filas: escrito en una línea se divide solo; con Enter elegís dónde. En el celular cada fila ocupa todo el ancho.</p>
+          <p className="text-xs text-[#86868B] mt-1">Se muestra en computadora y celular, en dos partes: escrito en una línea se divide solo; con Enter elegís dónde. En el celular la segunda parte va en verde lima.</p>
         </div>
         <div>
           <label htmlFor="b-hero-text" className={labelClass}>Texto de la portada</label>
           <textarea id="b-hero-text" rows={4} className={`${inputClass} resize-none`} value={form.heroText} disabled={!canEdit} maxLength={500} onChange={(e) => set('heroText', e.target.value)} placeholder="Tu tiempo es clave en la operación diaria…" />
           <p className="text-xs text-[#86868B] mt-1">Va debajo del título, en computadora y celular. Los saltos de línea se respetan.</p>
-        </div>
-        <div>
-          <label htmlFor="b-bg" className={labelClass}>Color de fondo (celular)</label>
-          <div className="flex items-center gap-3">
-            <input id="b-bg" type="color" value={form.backgroundColor || '#2E7D32'} disabled={!canEdit} onChange={(e) => set('backgroundColor', e.target.value)} className="h-11 w-14 rounded-lg border border-[#000000]/10 bg-white p-1 cursor-pointer" />
-            <input aria-label="Color en hexadecimal" className={`${inputClass} max-w-32 uppercase`} value={form.backgroundColor} disabled={!canEdit} maxLength={7} onChange={(e) => set('backgroundColor', e.target.value)} placeholder="#2E7D32" />
-            {canEdit && form.backgroundColor && (
-              <button type="button" onClick={() => set('backgroundColor', '')} className="text-xs underline underline-offset-2 text-[#515154] hover:text-[#1D1D1F]">Usar el verde por defecto</button>
-            )}
-          </div>
-          <p className="text-xs text-[#86868B] mt-1">Fondo de la página en el celular, la portada y la barra superior del navegador.</p>
         </div>
         <div>
           <label htmlFor="b-hero-title" className={labelClass}>Título de la portada</label>

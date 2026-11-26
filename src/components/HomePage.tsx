@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useMemo, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import CatalogPhoneMockup from '@/src/components/CatalogPhoneMockup';
 import { useRouter } from 'next/navigation';
 import type { HomeProperty } from '@/src/lib/homeData';
 import { typeLabels } from '@/src/utils/format';
@@ -48,39 +49,6 @@ function toHeadingRows(heading: string): string[] {
   return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
 }
 
-/** Phones: each row of the heading on one line, its font sized so every row spans the full width (capped at maxPx). A single-row heading just wraps. */
-function FitRows({ rows, maxPx = 28 }: { rows: string[]; maxPx?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const fit = rows.length > 1;
-  useLayoutEffect(() => {
-    const box = ref.current;
-    if (!box || !fit) return;
-    const run = () => {
-      const width = box.clientWidth;
-      if (!width) return;
-      for (const row of Array.from(box.children) as HTMLElement[]) {
-        row.style.fontSize = '100px';
-        const natural = row.offsetWidth;
-        row.style.fontSize = natural ? `${Math.min(maxPx, Math.floor((width / natural) * 1000) / 10)}px` : '';
-      }
-      box.style.visibility = 'visible';
-    };
-    run();
-    const ro = new ResizeObserver(run);
-    ro.observe(box);
-    document.fonts?.ready.then(run);
-    return () => ro.disconnect();
-  }, [rows, fit, maxPx]);
-  if (!fit) return <span className="block text-balance text-[clamp(22px,6.4vw,28px)]">{rows[0]}</span>;
-  return (
-    <span ref={ref} className="block w-full invisible">
-      {rows.map((row, i) => (
-        <span key={i} className="block w-max whitespace-nowrap">{row}</span>
-      ))}
-    </span>
-  );
-}
-
 /** Google reviews shown at the top of the hero. Fill in the business's real rating (e.g. 4.8) and review count; while null only the stars and "Google" show. */
 const GOOGLE_RATING: number | null = null;
 const GOOGLE_REVIEW_COUNT: number | null = null;
@@ -89,7 +57,7 @@ const GOOGLE_REVIEW_COUNT: number | null = null;
 const HERO_HEADING_CLASS =
   'mt-4 max-md:mt-[clamp(12px,2.4svh,20px)] md:mt-3 max-w-6xl max-md:text-center max-md:self-center max-md:w-full max-md:max-w-sm max-md:text-[clamp(24px,calc((100vw-40px)*3/26),45px)] max-md:leading-[1.1] sm:text-4xl md:text-[2.5rem] md:max-w-none md:text-balance xl:text-[2.75rem] font-semibold tracking-tight leading-[1.1]';
 const HERO_TEXT_CLASS =
-  'mt-4 max-md:mt-3 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[15px] max-md:leading-[1.45] max-md:tracking-[-0.022em] md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
+  'mt-4 max-md:mt-3 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[16px] max-md:leading-[1.35] max-md:mt-3.5 max-md:text-white/80 md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
 
 /** Hero buttons: solid black (primary) and a white outline (secondary), both with hover and press effects; the primary grows 15% on hover. */
 const HERO_BTN_BASE =
@@ -188,8 +156,10 @@ export default function HomePage({
         </div>
       </header>
         <section data-home-hero className="relative w-full max-md:min-h-[calc(65svh-clamp(8px,1.5svh,16px)+4.5rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pb-6 max-md:pt-[calc(4.5rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:min-h-[max(80svh,480px)] md:pt-[5.75rem] md:pb-6">
-          {/* Darker shade fading out from the top-left corner */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.18)_35%,transparent_65%)]" />
+          {/* Tablets and desktop: darker shade fading out from the top-left corner */}
+          <div aria-hidden="true" className="max-md:hidden pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.18)_35%,transparent_65%)]" />
+          {/* Phones: the /distribuidores look, a soft green light behind the image on the site's background color */}
+          <div aria-hidden="true" className="md:hidden pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_38%,rgba(76,175,80,0.45)_0%,rgba(46,125,50,0.18)_38%,transparent_70%)]" />
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-4 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
             {/* Left column: eyebrow, heading, text, buttons, social proof */}
             <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
@@ -234,13 +204,18 @@ export default function HomePage({
                 className="block w-full h-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)]"
               />
             </div>
-            {/* Phones only: the heading below the image, pulled up into the empty space under the basket. */}
-            <h1 className="md:hidden self-center w-full max-w-sm -mt-6 text-left font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
-              <FitRows rows={heroRows} />
+            {/* Phones only: the heading below the image, pulled up into the empty space under the basket. Same type as the
+                /distribuidores promo: extra bold, tight tracking and leading, the last line in lime. */}
+            <h1 className="md:hidden self-center w-full max-w-sm -mt-6 text-left text-balance text-[clamp(30px,9.4vw,40px)] font-extrabold leading-[1.02] tracking-[-0.03em]">
+              {heroRows.map((row, i) => (
+                <span key={i} className={i === heroRows.length - 1 && heroRows.length > 1 ? 'text-[#C6F432]' : undefined}>
+                  {row}{i < heroRows.length - 1 ? ' ' : ''}
+                </span>
+              ))}
             </h1>
             {/* Support text from Ajustes under the heading, on every screen size (on phones, left-aligned to the heading and buttons). */}
             <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:self-center`}>{heroText}</p>
-            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-5 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
+            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-6 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2.5 md:gap-2.5 max-md:w-full">
               {client && level ? (
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-2.5 max-md:w-full">
@@ -274,7 +249,7 @@ export default function HomePage({
               )}
             </div>
             {!(client && level) && (
-              <p className="mt-3 text-center text-xs text-white/80">
+              <p className="mt-3 text-center text-xs text-white/80 max-md:mt-4 max-md:text-[13px]">
                 ¿Todavía no sos cliente?{' '}
                 <a
                   href="#contact"
@@ -287,17 +262,12 @@ export default function HomePage({
             </div>
             </div>
 
-            {/* Right column: iPhone mockup of the ordering app (transparent WebP, trimmed to the phone) */}
-            {/* Desktop only: 1.5x the fitted size, top-aligned with the text and running off the bottom of the hero (clipped under the catalog panel). */}
-            <div className="max-md:hidden relative self-stretch animate-slide-up [--slide-delay:150ms]">
-              <Image
-                src="/hero_image/fresco_app.webp"
-                alt="App de pedidos mayoristas: catálogo de frutas y verduras"
-                width={256}
-                height={531}
-                sizes="480px"
-                priority
-                className="absolute left-[calc(50%-6rem)] top-0 -translate-x-1/2 h-[min(767px,calc((max(80svh,480px)-12rem)*1.5))] w-auto max-w-none drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
+            {/* Right column (tablets and desktop): a phone showing the mobile catalog, built in code and cut at 3/4 of its
+                height. Its width keeps the visible part inside the hero. */}
+            <div className="max-md:hidden flex justify-center items-center animate-slide-up [--slide-delay:150ms]">
+              <CatalogPhoneMockup
+                brand={brandOf(business)}
+                className="w-[min(340px,30vw,calc((max(80svh,480px)-12rem)/1.573))]"
               />
             </div>
           </div>
