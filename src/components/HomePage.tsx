@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -27,6 +27,44 @@ import {
 } from 'lucide-react';
 import { useBusiness } from '@/src/context/BusinessContext';
 import { brandOf } from '@/src/lib/siteMeta';
+
+/** Hero heading and support text come from Ajustes (Título principal / Texto de la portada), on every screen size; these are used while those are empty. Each line of the heading is one row. */
+const DEFAULT_HERO_HEADING = 'Frutas y vegetales frescos con\nentrega directa en tu comercio.';
+const DEFAULT_HERO_TEXT =
+  'Tu tiempo es clave en la operación diaria. Armá tu pedido en segundos, revisá tu lista de precios y repetí tus pedidos frecuentes sin llamadas ni demoras.';
+
+/** Phones: each row of the heading on one line, its font sized so every row spans the full width (capped at maxPx). A single-row heading just wraps. */
+function FitRows({ rows, maxPx = 28 }: { rows: string[]; maxPx?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const fit = rows.length > 1;
+  useLayoutEffect(() => {
+    const box = ref.current;
+    if (!box || !fit) return;
+    const run = () => {
+      const width = box.clientWidth;
+      if (!width) return;
+      for (const row of Array.from(box.children) as HTMLElement[]) {
+        row.style.fontSize = '100px';
+        const natural = row.offsetWidth;
+        row.style.fontSize = natural ? `${Math.min(maxPx, Math.floor((width / natural) * 1000) / 10)}px` : '';
+      }
+      box.style.visibility = 'visible';
+    };
+    run();
+    const ro = new ResizeObserver(run);
+    ro.observe(box);
+    document.fonts?.ready.then(run);
+    return () => ro.disconnect();
+  }, [rows, fit, maxPx]);
+  if (!fit) return <span className="block text-balance text-[clamp(22px,6.4vw,28px)]">{rows[0]}</span>;
+  return (
+    <span ref={ref} className="block w-full invisible">
+      {rows.map((row, i) => (
+        <span key={i} className="block w-max whitespace-nowrap">{row}</span>
+      ))}
+    </span>
+  );
+}
 
 /** Google reviews shown at the top of the hero. Fill in the business's real rating (e.g. 4.8) and review count; while null only the stars and "Google" show. */
 const GOOGLE_RATING: number | null = null;
@@ -56,6 +94,9 @@ export default function HomePage({
   // A customer who logged in with Acceso mayoristas sees their price level; everyone else sees list prices.
   const { client, level, signOutClient } = useClient();
   const business = useBusiness();
+  const heroHeading = business.heroHeading?.trim() || DEFAULT_HERO_HEADING;
+  const heroText = business.heroText?.trim() || DEFAULT_HERO_TEXT;
+  const heroRows = useMemo(() => heroHeading.split('\n').map((r) => r.trim()).filter(Boolean), [heroHeading]);
   const router = useRouter();
   // Phone top nav: transparent over the hero, blurred and tinted once the page scrolls.
   const [scrolled, setScrolled] = useState(false);
@@ -160,10 +201,12 @@ export default function HomePage({
                 {business.heroEyebrow}
               </span>
             )}
-            {/* Tablets and desktop show the heading from Ajustes; phones show the hero image below instead. */}
-            {business.heroHeading && (
-              <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroHeading}</h1>
-            )}
+            {/* Tablets and desktop: the heading from Ajustes, one row per line (phones show it below the image). */}
+            <h1 className={`${HERO_HEADING_CLASS} max-md:hidden`}>
+              {heroRows.map((row, i) => (
+                <span key={i} className="block">{row}</span>
+              ))}
+            </h1>
             {/* Phones only: cut-out basket of fruit and vegetables (transparent WebP), so it sits straight on the hero background. */}
             <div className="md:hidden w-full max-w-sm self-center">
               <Image
@@ -176,15 +219,12 @@ export default function HomePage({
                 className="block w-full h-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)]"
               />
             </div>
-            {/* Phones only: short heading below the image, pulled up into the empty space under the basket (tablets and desktop use the heading from Ajustes). */}
-            <h1 className="md:hidden self-center w-fit max-w-sm -mt-6 text-left text-[clamp(22px,6.4vw,28px)] font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
-              <span className="block">Frutas y vegetales frescos</span>
-              <span className="block whitespace-nowrap">para tu restaurante, hotel</span>
-              <span className="block">o comercio.</span>
+            {/* Phones only: the heading below the image, pulled up into the empty space under the basket. */}
+            <h1 className="md:hidden self-center w-full max-w-sm -mt-6 text-left font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+              <FitRows rows={heroRows} />
             </h1>
-            {business.heroText && (
-              <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
-            )}
+            {/* Support text from Ajustes under the heading, on every screen size (on phones, left-aligned to the heading and buttons). */}
+            <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:self-center`}>{heroText}</p>
             <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-5 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2.5 md:gap-2.5 max-md:w-full">
               {client && level ? (

@@ -149,12 +149,13 @@ export default function BusinessForm() {
         </div>
         <div>
           <label htmlFor="b-hero-heading" className={labelClass}>Título principal</label>
-          <textarea id="b-hero-heading" rows={2} className={`${inputClass} resize-none`} value={form.heroHeading} disabled={!canEdit} maxLength={160} onChange={(e) => set('heroHeading', e.target.value)} placeholder="El distribuidor hortifrutícola para la gastronomía de Punta del Este." />
+          <textarea id="b-hero-heading" rows={2} className={`${inputClass} resize-none`} value={form.heroHeading} disabled={!canEdit} maxLength={160} onChange={(e) => set('heroHeading', e.target.value)} placeholder={'Frutas y vegetales frescos con\nentrega directa en tu comercio.'} />
+          <p className="text-xs text-[#86868B] mt-1">Se muestra en computadora y celular. Cada línea es una fila; en el celular cada fila ocupa todo el ancho.</p>
         </div>
         <div>
           <label htmlFor="b-hero-text" className={labelClass}>Texto de la portada</label>
-          <textarea id="b-hero-text" rows={4} className={`${inputClass} resize-none`} value={form.heroText} disabled={!canEdit} maxLength={500} onChange={(e) => set('heroText', e.target.value)} placeholder="Abastecemos a restaurantes, hoteles y comercios…" />
-          <p className="text-xs text-[#86868B] mt-1">Los saltos de línea se respetan.</p>
+          <textarea id="b-hero-text" rows={4} className={`${inputClass} resize-none`} value={form.heroText} disabled={!canEdit} maxLength={500} onChange={(e) => set('heroText', e.target.value)} placeholder="Tu tiempo es clave en la operación diaria…" />
+          <p className="text-xs text-[#86868B] mt-1">Va debajo del título, en computadora y celular. Los saltos de línea se respetan.</p>
         </div>
         <div>
           <label htmlFor="b-bg" className={labelClass}>Color de fondo (celular)</label>
