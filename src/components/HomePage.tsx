@@ -96,7 +96,7 @@ export default function HomePage({
         <div className="bg-black text-white text-center text-[11px] font-medium tracking-wide py-1.5 px-4 leading-snug pt-[calc(0.375rem+env(safe-area-inset-top))]">
           <span>Entregas diarias en Maldonado y Punta del Este</span>
         </div>
-        <div className="h-14 px-3 flex items-center justify-between">
+        <div className="h-11 px-3 flex items-center justify-between">
           <span className="pl-1 min-w-0 truncate font-semibold text-lg tracking-tight text-white drop-shadow">{brandOf(business)}</span>
           <div className="flex items-center gap-2">
             <button
@@ -132,10 +132,10 @@ export default function HomePage({
           </div>
         </div>
       </header>
-        <section data-home-hero className="relative w-full max-md:min-h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pb-6 max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:min-h-[max(80svh,480px)] md:pt-[5.75rem] md:pb-6">
+        <section data-home-hero className="relative w-full max-md:min-h-[calc(65svh-clamp(8px,1.5svh,16px)+4.5rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pb-6 max-md:pt-[calc(4.5rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:min-h-[max(80svh,480px)] md:pt-[5.75rem] md:pb-6">
           {/* Darker shade fading out from the top-left corner */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.18)_35%,transparent_65%)]" />
-            <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-4 pt-[clamp(16px,4svh,32px)] max-md:pb-4 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
+            <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-4 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
             {/* Left column: eyebrow, heading, text, buttons, social proof */}
             <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
             {/* Google reviews, at the top of the text block (desktop and tablet only) */}
@@ -188,7 +188,7 @@ export default function HomePage({
             {business.heroText && (
               <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
             )}
-            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-[clamp(16px,3.3svh,28px)] md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
+            <div className="mt-[clamp(16px,4svh,32px)] max-md:-mt-14 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2.5 md:gap-2.5 max-md:w-full">
               {client && level ? (
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-2.5 max-md:w-full">
