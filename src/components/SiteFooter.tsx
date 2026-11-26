@@ -127,7 +127,7 @@ export default function SiteFooter({ onGreen = true }: { onGreen?: boolean } = {
           <ul className="space-y-3 text-sm text-[#1D1D1F] font-light">
             <li><Link href="/privacidad" className={linkClass}>Política de privacidad</Link></li>
             <li><Link href="/creditos" className={linkClass}>Créditos de fotos</Link></li>
-            <li className="hidden md:list-item"><Link href="/opengraph" className={linkClass}>Open Graph</Link></li>
+            <li className="hidden md:list-item"><Link href="/distribuidores" className={linkClass}>Para distribuidoras</Link></li>
             <li><Link href="/admin/login" className={linkClass}>Administración</Link></li>
           </ul>
         </div>

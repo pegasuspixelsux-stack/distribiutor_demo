@@ -48,6 +48,8 @@ const nextConfig: NextConfig = {
       { source: "/dashboard/properties", destination: "/dashboard/productos", permanent: true },
       { source: "/dashboard/properties/:path*", destination: "/dashboard/productos/:path*", permanent: true },
       { source: "/dashboard/leads", destination: "/dashboard/pedidos", permanent: true },
+      // The old Open Graph flyer was replaced by the /distribuidores promo page.
+      { source: "/opengraph", destination: "/distribuidores", permanent: true },
     ];
   },
   async headers() {

@@ -1,4 +1,4 @@
-/** Shared site texts (used by the layout metadata and the Open Graph page). */
+/** Shared site texts (used by the layout metadata and the /distribuidores promo page). */
 /** Brand shown when no business name is set in Ajustes. */
 export const SITE_TITLE = 'Catálogo Mayorista';
 /** The business name from Ajustes, or the neutral default. */
@@ -6,12 +6,12 @@ export const brandOf = (b: { businessName?: string } | null | undefined) => b?.b
 export const SITE_DESCRIPTION =
   'Distribuidor hortifrutícola para la gastronomía de Punta del Este: frutas, verduras y hojas verdes frescas para restaurantes, hoteles y comercios. Catálogo mayorista y entregas diarias.';
 
-/** Link preview (WhatsApp, Facebook, X): the text of the /opengraph flyer and a screenshot of it. */
-export const SHARE_TITLE = 'Tus clientes piden solos. Siempre con tu margen.';
+/** Link preview (WhatsApp, Facebook, X) for every page without its own image: the /distribuidores promo page. */
+export const SHARE_TITLE = 'Recibí y gestioná los pedidos de tus clientes sin caos';
 export const SHARE_DESCRIPTION =
-  'La app de pedidos para distribuidores de frutas y verduras. Pedidos fáciles de procesar · Precios dinámicos, cambios en segundos · Niveles de precio por cliente · Protegé tu margen en cada venta · Tus clientes repiten su pedido en un clic · Fidelizá con favoritos y app propia';
-/** A 1440 x 1440 px (square) screenshot of the /opengraph hero. WhatsApp caches previews hard: a changed image needs a new file name (opengraph-v7.jpg ...). */
-export const SHARE_IMAGE = '/opengraph-v6.jpg';
-export const SHARE_IMAGE_WIDTH = 1440;
-export const SHARE_IMAGE_HEIGHT = 1440;
-export const SHARE_IMAGE_ALT = 'La app de pedidos para distribuidores de frutas y verduras: el catálogo en un celular';
+  'Sistema de pedidos B2B para distribuidoras: tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado, sin errores por teléfono ni mensajes perdidos.';
+/** A 1200 x 630 screenshot of /distribuidores. WhatsApp caches previews hard: a changed image needs a new file name (distribuidores-v2.jpg ...). */
+export const SHARE_IMAGE = '/og/distribuidores-v1.jpg';
+export const SHARE_IMAGE_WIDTH = 1200;
+export const SHARE_IMAGE_HEIGHT = 630;
+export const SHARE_IMAGE_ALT = 'Sistema de pedidos B2B para distribuidoras: catálogo con precios por cliente y pedido listo para enviar';

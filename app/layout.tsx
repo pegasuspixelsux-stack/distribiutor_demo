@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: name,
     publisher: name,
     category: "food",
-    // Link preview (WhatsApp, Facebook, X): the flyer's text and a screenshot of /opengraph. Pages with their own
+    // Link preview (WhatsApp, Facebook, X): the /distribuidores promo text and its 1200 x 630 screenshot. Pages with their own
     // image (each product) override it.
     openGraph: {
       type: "website",

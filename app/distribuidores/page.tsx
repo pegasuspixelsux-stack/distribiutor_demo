@@ -1,35 +1,31 @@
 import type { Metadata } from 'next';
 import { Minus, Plus, RotateCcw, Send } from 'lucide-react';
+import { SHARE_DESCRIPTION, SHARE_IMAGE, SHARE_IMAGE_ALT, SHARE_IMAGE_HEIGHT, SHARE_IMAGE_WIDTH, SHARE_TITLE } from '@/src/lib/siteMeta';
 
 // Desktop promo page for distributors, built to be screenshotted at 1200 x 630 for link previews (WhatsApp, Facebook,
 // LinkedIn, X). Rendered on the server, with no site navigation, footer or floating widgets: only the hero.
 //
 // Taking the screenshot: open /distribuidores in a 1200 x 630 browser viewport (or any desktop size with the same
 // 1.9 : 1 shape: everything scales with the viewport) and capture the whole viewport. Save it as public/og/ with a NEW
-// file name each time (distribuidores-v2.jpg, ...), because WhatsApp caches previews by URL, and update OG_IMAGE below.
-
-const TITLE = 'Recibí y gestioná los pedidos de tus clientes sin caos';
-const DESCRIPTION =
-  'Sistema de pedidos B2B para distribuidoras: tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado, sin errores por teléfono ni mensajes perdidos.';
-const OG_IMAGE = '/og/distribuidores-v1.jpg';
-const OG_IMAGE_ALT = 'Sistema de pedidos B2B para distribuidoras: catálogo con precios por cliente y pedido listo para enviar';
+// file name each time (distribuidores-v2.jpg, ...), because WhatsApp caches previews by URL, and update SHARE_IMAGE in
+// src/lib/siteMeta.ts (the whole site uses this preview).
 
 /** Swap the built-in interface preview for a real screenshot: set a path in public/ (or a full image URL). */
 const SHOWCASE_IMAGE: string | null = null;
 
 export const metadata: Metadata = {
   title: 'Sistema de pedidos para distribuidoras',
-  description: DESCRIPTION,
+  description: SHARE_DESCRIPTION,
   alternates: { canonical: '/distribuidores' },
   openGraph: {
     type: 'website',
     url: '/distribuidores',
     locale: 'es_UY',
-    title: TITLE,
-    description: DESCRIPTION,
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_IMAGE_ALT, type: 'image/jpeg' }],
+    title: SHARE_TITLE,
+    description: SHARE_DESCRIPTION,
+    images: [{ url: SHARE_IMAGE, width: SHARE_IMAGE_WIDTH, height: SHARE_IMAGE_HEIGHT, alt: SHARE_IMAGE_ALT, type: 'image/jpeg' }],
   },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: [OG_IMAGE] },
+  twitter: { card: 'summary_large_image', title: SHARE_TITLE, description: SHARE_DESCRIPTION, images: [SHARE_IMAGE] },
 };
 
 /** Sample order shown in the interface preview: client price, list price, box and quantity. */
