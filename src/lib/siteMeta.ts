@@ -9,7 +9,7 @@ export const SITE_DESCRIPTION =
 /** Link preview (WhatsApp, Facebook, X) for every page without its own image: the /distribuidores promo page. */
 export const SHARE_TITLE = 'Recibí y gestioná los pedidos de tus clientes sin caos';
 export const SHARE_DESCRIPTION =
-  'Sistema de pedidos B2B para distribuidoras: tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado, sin errores por teléfono ni mensajes perdidos.';
+  'Sistema de pedidos B2B para distribuidoras: tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado, sin errores por teléfono ni mensajes perdidos. Respondé este mensaje y coordinamos una demostración gratis o una llamada.';
 /** A 1200 x 630 screenshot of /distribuidores. WhatsApp caches previews hard: a changed image needs a new file name (distribuidores-v2.jpg ...). */
 export const SHARE_IMAGE = '/og/distribuidores-v1.jpg';
 export const SHARE_IMAGE_WIDTH = 1200;
