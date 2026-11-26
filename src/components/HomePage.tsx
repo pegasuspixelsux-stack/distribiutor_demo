@@ -33,15 +33,21 @@ import { brandOf } from '@/src/lib/siteMeta';
 
 
 
+/** Hero heading on phones only, in two rows: a small line on top and a big bold word below (desktop uses the heading from Ajustes). */
+const MOBILE_HERO_HEADING_SMALL = 'Mercado';
+const MOBILE_HERO_HEADING_BIG = 'Fresco';
+/** Hero support text on phones only: a shorter version of the text from Ajustes. */
+const MOBILE_HERO_TEXT = 'Distribución directa y programada para restaurantes, hoteles y comercios.';
+
 /** Google reviews shown at the top of the hero. Fill in the business's real rating (e.g. 4.8) and review count; while null only the stars and "Google" show. */
 const GOOGLE_RATING: number | null = null;
 const GOOGLE_REVIEW_COUNT: number | null = null;
 
 /** Hero heading / subheading styles: on phones both are as wide as the buttons (max-w-sm). */
 const HERO_HEADING_CLASS =
-  'mt-4 max-md:mt-3 md:mt-3 max-w-6xl max-md:text-left max-md:w-full max-md:max-w-sm max-md:text-[clamp(16px,calc((100vw-40px)/13),30px)] max-md:leading-[1.1] sm:text-4xl md:text-[2.5rem] md:max-w-none md:text-balance xl:text-[2.75rem] font-semibold tracking-tight leading-[1.1]';
+  'mt-4 max-md:mt-5 md:mt-3 max-w-6xl max-md:text-center max-md:self-center max-md:w-full max-md:max-w-sm max-md:text-[clamp(24px,calc((100vw-40px)*3/26),45px)] max-md:leading-[1.1] sm:text-4xl md:text-[2.5rem] md:max-w-none md:text-balance xl:text-[2.75rem] font-semibold tracking-tight leading-[1.1]';
 const HERO_TEXT_CLASS =
-  'mt-4 max-md:mt-1.5 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[15px] max-md:leading-[1.35] max-md:tracking-[-0.022em] md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
+  'mt-4 max-md:mt-3 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[15px] max-md:leading-[1.45] max-md:tracking-[-0.022em] md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
 
 /** Hero buttons: dark-to-light green vertical gradient (primary) and a white outline (secondary), both with hover and press effects. */
 const HERO_BTN_BASE =
@@ -137,6 +143,8 @@ export default function HomePage({
         </div>
       </header>
         <section data-home-hero className="relative w-full max-md:min-h-[calc(65svh-clamp(8px,1.5svh,16px)+5.25rem+env(safe-area-inset-top))] max-md:flex max-md:flex-col max-md:justify-center max-md:pb-6 max-md:pt-[calc(5.25rem+env(safe-area-inset-top))] max-md:rounded-none overflow-hidden md:rounded-none border-0 border-[var(--brand-bg,#2E7D32)] bg-[var(--brand-bg,#2E7D32)] text-white md:flex md:items-center md:min-h-[max(80svh,480px)] md:pt-[5.75rem] md:pb-6">
+          {/* Darker shade fading out from the top-left corner */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.18)_35%,transparent_65%)]" />
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-0 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
             {/* Left column: eyebrow, heading, text, buttons, social proof */}
             <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
@@ -163,14 +171,28 @@ export default function HomePage({
                 {business.heroEyebrow}
               </span>
             )}
-            {business.heroHeading && (
-              <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line`}>{business.heroHeading}</h1>
-            )}
+            {/* Phones show a fixed short heading; tablets and desktop show the heading from Ajustes. */}
+            <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line`}>
+              {/* Two rows of equal width: MERCADO spread letter by letter across the width of FRESCO, with a rule between. */}
+              <span className="md:hidden inline-flex flex-col items-stretch">
+                <span className="sr-only">{MOBILE_HERO_HEADING_SMALL} </span>
+                <span aria-hidden="true" className="flex justify-between text-[0.6em] font-medium uppercase leading-none">
+                  {MOBILE_HERO_HEADING_SMALL.split('').map((ch, i) => (
+                    <span key={i}>{ch}</span>
+                  ))}
+                </span>
+                <span aria-hidden="true" className="block h-[2px] my-2.5 rounded-full bg-white/70" />
+                <span className="block text-[1.8em] font-extrabold leading-none">{MOBILE_HERO_HEADING_BIG}</span>
+              </span>
+              {business.heroHeading && <span className="max-md:hidden">{business.heroHeading}</span>}
+            </h1>
+            {/* Phones show a shorter fixed text, centred with balanced (equal-width) lines; tablets and desktop show the text from Ajustes. */}
+            <p className={`${HERO_TEXT_CLASS.replace('max-md:text-left', 'max-md:text-center').replace('text-pretty', 'text-balance')} self-center md:hidden`}>{MOBILE_HERO_TEXT}</p>
             {business.heroText && (
-              <p className={`${HERO_TEXT_CLASS} whitespace-pre-line`}>{business.heroText}</p>
+              <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
             )}
-            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-3 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2 md:gap-2.5 max-md:w-full">
+            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-7 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2.5 md:gap-2.5 max-md:w-full">
               {client && level ? (
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-2.5 max-md:w-full">
                   <Link
@@ -212,7 +234,7 @@ export default function HomePage({
               )}
             </div>
             {!(client && level) && (
-              <p className="mt-3 text-center text-xs text-white/80">
+              <p className="mt-3 max-md:mt-4 text-center text-xs text-white/80">
                 ¿Ya sos cliente?{' '}
                 <button
                   type="button"
