@@ -21,7 +21,7 @@ export default function BottomNav() {
   const icon = (active: boolean) => `w-6 h-6 transition-transform duration-200 ${active ? 'scale-110 [stroke-width:2.4]' : ''}`;
 
   // The Open Graph flyer is a single full screen shared on WhatsApp: no app navigation on top of it.
-  if (pathname.startsWith('/opengraph')) return null;
+  if (pathname.startsWith('/opengraph') || pathname.startsWith('/distribuidores')) return null;
 
   const home = pathname === '/';
   const catalog = pathname.startsWith('/productos');

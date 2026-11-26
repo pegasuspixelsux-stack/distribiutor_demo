@@ -287,14 +287,14 @@ export default function HomePage({
             </div>
             </div>
 
-            {/* Right column: iPhone mockup of the ordering app (transparent WebP, already tilted) */}
+            {/* Right column: iPhone mockup of the ordering app (transparent WebP, trimmed to the phone) */}
             {/* Desktop only: 1.5x the fitted size, top-aligned with the text and running off the bottom of the hero (clipped under the catalog panel). */}
             <div className="max-md:hidden relative self-stretch animate-slide-up [--slide-delay:150ms]">
               <Image
-                src="/hero_image/mockup_demo.webp"
+                src="/hero_image/fresco_app.webp"
                 alt="App de pedidos mayoristas: catálogo de frutas y verduras"
-                width={301}
-                height={511}
+                width={256}
+                height={531}
                 sizes="480px"
                 priority
                 className="absolute left-[calc(50%-6rem)] top-0 -translate-x-1/2 h-[min(767px,calc((max(80svh,480px)-12rem)*1.5))] w-auto max-w-none drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
