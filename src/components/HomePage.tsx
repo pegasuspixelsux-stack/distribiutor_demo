@@ -29,16 +29,6 @@ import {
 import { useBusiness } from '@/src/context/BusinessContext';
 import { brandOf } from '@/src/lib/siteMeta';
 
-
-
-
-
-/** Hero heading on phones only, in two rows: a small line on top and a big bold word below (desktop uses the heading from Ajustes). */
-const MOBILE_HERO_HEADING_SMALL = 'Mercado';
-const MOBILE_HERO_HEADING_BIG = 'Fresco';
-/** Hero support text on phones only: a shorter version of the text from Ajustes. */
-const MOBILE_HERO_TEXT = 'Distribución directa y programada para restaurantes, hoteles y comercios.';
-
 /** Google reviews shown at the top of the hero. Fill in the business's real rating (e.g. 4.8) and review count; while null only the stars and "Google" show. */
 const GOOGLE_RATING: number | null = null;
 const GOOGLE_REVIEW_COUNT: number | null = null;
@@ -148,8 +138,8 @@ export default function HomePage({
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-4 pt-[clamp(16px,4svh,32px)] max-md:pb-4 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
             {/* Left column: eyebrow, heading, text, buttons, social proof */}
             <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
-            {/* Google reviews, at the top of the text block (phones too) */}
-            <div className="mb-4 max-md:mb-3 max-md:self-center flex items-center gap-1.5 text-sm max-md:text-[13px] leading-snug">
+            {/* Google reviews, at the top of the text block (desktop and tablet only) */}
+            <div className="mb-4 max-md:hidden flex items-center gap-1.5 text-sm max-md:text-[13px] leading-snug">
               <span className="font-semibold">Google</span>
               <span
                 className="flex items-center gap-0.5 text-amber-300"
@@ -167,27 +157,34 @@ export default function HomePage({
               )}
             </div>
             {business.heroEyebrow && (
-              <span className="block w-fit max-md:mt-0 max-md:self-center md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
+              <span className="max-md:hidden w-fit md:inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase">
                 {business.heroEyebrow}
               </span>
             )}
-            {/* Phones show a fixed short heading; tablets and desktop show the heading from Ajustes. */}
-            <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line`}>
-              {/* Two rows of equal width: MERCADO spread letter by letter across the width of FRESCO, with a rule between. */}
-              <span className="md:hidden inline-flex flex-col items-stretch">
-                <span className="sr-only">{MOBILE_HERO_HEADING_SMALL} </span>
-                <span aria-hidden="true" className="flex justify-between text-[0.6em] font-medium uppercase leading-none">
-                  {MOBILE_HERO_HEADING_SMALL.split('').map((ch, i) => (
-                    <span key={i}>{ch}</span>
-                  ))}
-                </span>
-                <span aria-hidden="true" className="block h-[2px] my-[clamp(6px,1.2svh,10px)] rounded-full bg-white/70" />
-                <span className="block text-[1.65em] font-extrabold leading-none">{MOBILE_HERO_HEADING_BIG}</span>
-              </span>
-              {business.heroHeading && <span className="max-md:hidden">{business.heroHeading}</span>}
-            </h1>
-            {/* Phones show a shorter fixed text, centred with balanced (equal-width) lines; tablets and desktop show the text from Ajustes. */}
-            <p className={`${HERO_TEXT_CLASS.replace('max-md:text-left', 'max-md:text-center').replace('text-pretty', 'text-balance')} self-center md:hidden`}>{MOBILE_HERO_TEXT}</p>
+            {/* Tablets and desktop show the heading from Ajustes; phones show the hero image below instead. */}
+            {business.heroHeading && (
+              <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroHeading}</h1>
+            )}
+            {/* Phones only: the "De Nuestra Tierra a Tu Mesa" image, full width, its edges faded into the hero background. */}
+            <div className="md:hidden relative -mx-5 w-[calc(100%+2.5rem)]">
+              <Image
+                src="/hero_image/De%20Nuestra%20Tierra%20a%20Tu%20Mesa.png"
+                alt="De Nuestra Tierra a Tu Mesa: frescura, nutrición y sostenibilidad"
+                width={1121}
+                height={1403}
+                sizes="100vw"
+                priority
+                className="block w-full h-auto"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,var(--brand-bg,#2E7D32)_0%,transparent_14%,transparent_72%,var(--brand-bg,#2E7D32)_100%)]"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--brand-bg,#2E7D32)_0%,transparent_10%,transparent_90%,var(--brand-bg,#2E7D32)_100%)]"
+              />
+            </div>
             {business.heroText && (
               <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
             )}
