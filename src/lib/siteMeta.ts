@@ -7,9 +7,10 @@ export const SITE_DESCRIPTION =
   'Distribuidor hortifrutícola para la gastronomía de Punta del Este: frutas, verduras y hojas verdes frescas para restaurantes, hoteles y comercios. Catálogo mayorista y entregas diarias.';
 
 /** Link preview (WhatsApp, Facebook, X) for every page without its own image: the /distribuidores promo page. */
-export const SHARE_TITLE = 'Recibí y gestioná los pedidos de tus clientes sin caos';
+// WhatsApp shows about 60 characters of the title and about 100 of the description on a phone: keep them under that.
+export const SHARE_TITLE = 'Pedidos B2B para Distribuidoras | Tu Catálogo Digital';
 export const SHARE_DESCRIPTION =
-  'Sistema de pedidos B2B para distribuidoras: tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado, sin errores por teléfono ni mensajes perdidos. Respondé este mensaje y coordinamos una demostración gratis o una llamada.';
+  'Tus clientes ven sus precios, repiten pedidos en segundos y vos recibís todo ordenado.';
 /** A 1200 x 630 screenshot of /distribuidores. WhatsApp caches previews hard: a changed image needs a new file name (distribuidores-v2.jpg ...). */
 export const SHARE_IMAGE = '/og/distribuidores-v1.jpg';
 export const SHARE_IMAGE_WIDTH = 1200;
