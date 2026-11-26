@@ -249,7 +249,7 @@ const activeFilters =
                 onClick={signOutClient}
                 aria-label="Cerrar sesión"
                 title="Cerrar sesión"
-                className={`w-9 h-9 shrink-0 rounded-full ${soft} text-[#1D1D1F] flex items-center justify-center hover:bg-[#F5F5F7] active:scale-95 transition`}
+                className={`tap-44 relative w-9 h-9 shrink-0 rounded-full ${soft} text-[#1D1D1F] flex items-center justify-center hover:bg-[#F5F5F7] active:scale-95 transition`}
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -433,7 +433,7 @@ const activeFilters =
                   aria-pressed={layout === value}
                   aria-label={label}
                   title={label}
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  className={`tap-44 relative w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                     layout === value ? 'bg-[#2E7D32] text-white' : 'text-[#515154] hover:bg-[#F5F5F7]'
                   }`}
                 >
@@ -498,7 +498,7 @@ const activeFilters =
                   onClick={() => addToCart(prop)}
                   disabled={prop.inStock === false}
                   aria-label={prop.inStock === false ? `${prop.title} está sin stock` : `Agregar ${prop.title} al carrito`}
-                  className="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center shadow-sm hover:bg-[#256628] active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="tap-44 relative w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center shadow-sm hover:bg-[#256628] active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -562,7 +562,7 @@ const activeFilters =
                     onClick={() => addToCart(prop)}
                     disabled={soldOut}
                     aria-label={soldOut ? `${prop.title} está sin stock` : `Agregar ${prop.title} al carrito`}
-                    className="w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center hover:bg-[#256628] active:scale-95 transition disabled:opacity-40"
+                    className="tap-44 relative w-8 h-8 rounded-full bg-[#2E7D32] text-white flex items-center justify-center hover:bg-[#256628] active:scale-95 transition disabled:opacity-40"
                   >
                     <Plus className="w-4 h-4" />
                   </button>

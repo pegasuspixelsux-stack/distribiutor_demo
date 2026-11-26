@@ -17,6 +17,7 @@ const errors: Record<Exclude<TokenResult, 'ok'>, string> = {
   invalid: 'El teléfono o la contraseña/PIN no coinciden. Revisalos o pedile tu acceso a tu distribuidor.',
   suspended: 'Tu cuenta está suspendida. Comunicate con tu distribuidor para reactivarla.',
   error: 'No pudimos verificar tus datos. Revisá tu conexión y probá de nuevo.',
+  too_many: 'Demasiados intentos. Esperá 15 minutos y probá de nuevo, o pedile tu acceso a tu distribuidor.',
 };
 
 /**
@@ -162,8 +163,8 @@ export default function WholesaleAccess({ glass, noModal }: { glass?: boolean; n
       {open && !noModal && createPortal(
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-hidden="true" />
-          <div role="dialog" aria-modal="true" aria-label="Acceso mayoristas" className="relative w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 md:p-8">
-            <button type="button" onClick={() => setOpen(false)} aria-label="Cerrar" className="absolute top-4 right-4 p-2 rounded-full hover:bg-[#F5F5F7]">
+          <div role="dialog" aria-modal="true" aria-label="Acceso mayoristas" className="relative w-full max-w-sm max-h-[calc(100dvh-2rem)] overflow-y-auto bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <button type="button" onClick={() => setOpen(false)} aria-label="Cerrar" className="tap-44 absolute top-4 right-4 p-2 rounded-full hover:bg-[#F5F5F7]">
               <X className="w-4 h-4" />
             </button>
             <h2 className="text-xl font-semibold tracking-tight">Acceso mayoristas</h2>

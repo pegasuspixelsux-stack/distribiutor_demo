@@ -151,7 +151,7 @@ export default function BuyBox({
               onClick={() => setQty((q) => Math.max(1, q - 1))}
               disabled={qty <= 1}
               aria-label="Disminuir cantidad"
-              className="w-9 h-9 rounded-full flex items-center justify-center disabled:opacity-30"
+              className="tap-44 relative w-9 h-9 rounded-full flex items-center justify-center disabled:opacity-30"
             >
               <Minus className="w-4 h-4" />
             </button>
@@ -160,7 +160,7 @@ export default function BuyBox({
               type="button"
               onClick={() => setQty((q) => Math.min(999, q + 1))}
               aria-label="Aumentar cantidad"
-              className="w-9 h-9 rounded-full flex items-center justify-center"
+              className="tap-44 relative w-9 h-9 rounded-full flex items-center justify-center"
             >
               <Plus className="w-4 h-4" />
             </button>

@@ -2,9 +2,7 @@
 
 import SignInNotice from '@/src/components/SignInNotice';
 import { useEffect, useState } from 'react';
-import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
-import { db } from '@/lib/firebase';
 import type { HomeProperty } from '@/src/lib/homeData';
 import { formatMoney, priceWithShortUnit, quantityLabel } from '@/src/utils/format';
 import PropertyImage from '@/src/components/PropertyImage';
@@ -31,7 +29,6 @@ export default function CartDrawer({
   onChangeQty,
   onRemove,
   onPlaced,
-  buyerType,
 }: {
   open: boolean;
   onClose: () => void;
@@ -39,9 +36,8 @@ export default function CartDrawer({
   onChangeQty: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
   onPlaced: () => void;
-  buyerType: 'retail' | 'wholesale';
 }) {
-  const { client, level } = useClient();
+  const { client } = useClient();
   const emptyForm = {
     name: '',
     phone: '',
@@ -55,6 +51,7 @@ export default function CartDrawer({
   const [form, setForm] = useState(emptyForm);
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [formError, setFormError] = useState<string | null>(null);
+  const [priceNote, setPriceNote] = useState<string | null>(null);
 
   // A signed-in client's profile (contact, WhatsApp, address, receiving hour) fills in the order form.
   const profileToken = client?.token;
@@ -92,52 +89,38 @@ export default function CartDrawer({
     if (!phone && !form.email.trim()) return setFormError('Ingresá un teléfono o un correo electrónico.');
     if (form.fulfillment === 'delivery' && !form.address.trim()) return setFormError('Ingresá la dirección de entrega.');
     if (!form.time) return setFormError('Elegí la hora en que vas a recibir o retirar el pedido.');
-    if (!db) {
-      setState('error');
-      return;
-    }
     setFormError(null);
+    setPriceNote(null);
     setState('sending');
     try {
-      // One order per cart line, written together: either all of them are saved or none.
-      const batch = writeBatch(db);
-      // Shared by every product line of this order, so the dashboard shows them as one order.
-      const orderId = doc(collection(db, 'leads')).id;
-      const tag =
-        client && level ? `Mayorista · ${level.name}` : buyerType === 'wholesale' ? 'Mayorista' : 'Minorista';
-      const deliveryLines = [
-        form.fulfillment === 'delivery' ? `Entrega a domicilio: ${form.address.trim()}` : 'Retiro en local',
-        `${form.fulfillment === 'delivery' ? 'Hora de recepción' : 'Hora de retiro'}: ${form.date ? `${form.date} ` : ''}${form.time}`,
-        `Contacto: ${name} · WhatsApp: ${phone || '—'}`,
-        'Precios sujetos a confirmación: se confirma el pedido con precios ajustados antes del envío.',
-        form.notes.trim() && `Instrucciones especiales: ${form.notes.trim()}`,
-      ];
-      for (const { item, qty } of lines) {
-        const unit = unitPriceOf(item);
-        batch.set(doc(collection(db, 'leads')), {
-          orderId,
-          name: client ? `${client.businessName}${name !== client.businessName ? ` (${name})` : ''}` : name,
-          phone,
-          // The price the customer saw and accepted (their price level included), and who they are.
-          unitPrice: unit,
-          quantity: qty,
-          ...(client && level ? { clientId: client.clientId, priceLevelId: level.id } : {}),
-          email: form.email.trim(),
-          property: item.title,
-          // Firestore ids are strings; the built-in samples use numbers and are not real items.
-          ...(typeof item.id === 'string' ? { propertyId: item.id } : {}),
-          channel: 'Portal',
-          message: [
-            `[${tag}] ${item.title} - ${quantityLabel(qty, item.pricingMode)} @ ${priceWithShortUnit(unit, item.pricingMode)} · Subtotal: ${formatMoney(unit * qty)}`,
-            ...deliveryLines,
-          ]
-            .filter(Boolean)
-            .join('\n'),
-          status: 'new',
-          createdAt: serverTimestamp(),
-        });
+      // The server works out every price from the product and the client's level (it cannot be set from here)
+      // and saves the order, one line per product, all or nothing.
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: client.token,
+          lines: lines.map(({ item, qty }) => ({ id: item.id, mode: item.pricingMode ?? 'por_kilo', qty })),
+          contact: { ...form, name, phone },
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string; title?: string; total?: number };
+      if (!res.ok) {
+        setState('idle');
+        const which = data.title ? `“${data.title}”` : 'Un producto';
+        setFormError(
+          data.error === 'out_of_stock' ? `${which} se quedó sin stock. Quitalo del carrito para enviar el pedido.`
+          : data.error === 'unavailable' || data.error === 'unit' ? `${which} ya no está disponible así. Quitalo y volvé a agregarlo desde el catálogo.`
+          : data.error === 'too_many' ? 'Enviaste muchos pedidos seguidos. Esperá un rato y probá de nuevo.'
+          : data.error === 'suspended' || data.error === 'unauthorized' ? 'Tu acceso ya no es válido. Volvé a ingresar con tu teléfono y contraseña.'
+          : 'No pudimos enviar el pedido. Revisá tu conexión y probá de nuevo.',
+        );
+        return;
       }
-      await batch.commit();
+      // Prices may have changed since the products were added to the cart: say so, with the total that was saved.
+      if (typeof data.total === 'number' && Math.abs(data.total - total) >= 0.01) {
+        setPriceNote(`Algunos precios se actualizaron desde que agregaste los productos. Total del pedido: ${formatMoney(data.total)}.`);
+      }
       setState('sent');
       // Keep the profile data for the client's next order; clear only what belongs to this one.
       setForm({
@@ -179,6 +162,7 @@ export default function CartDrawer({
           {state === 'sent' && lines.length === 0 ? (
             <p role="status" className="text-sm text-green-700 py-10 text-center">
               ¡Gracias! Tu pedido fue enviado. Nos vamos a comunicar con vos en breve.
+              {priceNote && <span className="block mt-2 text-[#515154]">{priceNote}</span>}
             </p>
           ) : lines.length === 0 ? (
             <p className="text-sm text-[#515154] py-10 text-center">Tu carrito está vacío.</p>
@@ -198,14 +182,14 @@ export default function CartDrawer({
                           {priceWithShortUnit(unitPriceOf(item), item.pricingMode)}
                         </p>
                         <div className="mt-2 flex items-center gap-2">
-                          <button type="button" onClick={() => onChangeQty(id, -1)} disabled={qty <= 1} aria-label={`Disminuir ${item.title}`} className="w-7 h-7 rounded-full bg-[#F5F5F7] flex items-center justify-center disabled:opacity-30">
+                          <button type="button" onClick={() => onChangeQty(id, -1)} disabled={qty <= 1} aria-label={`Disminuir ${item.title}`} className="tap-44 relative w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center disabled:opacity-30">
                             <Minus className="w-3.5 h-3.5" />
                           </button>
                           <span className="min-w-16 text-center text-sm font-medium" aria-live="polite">{quantityLabel(qty, item.pricingMode)}</span>
-                          <button type="button" onClick={() => onChangeQty(id, 1)} aria-label={`Aumentar ${item.title}`} className="w-7 h-7 rounded-full bg-[#F5F5F7] flex items-center justify-center">
+                          <button type="button" onClick={() => onChangeQty(id, 1)} aria-label={`Aumentar ${item.title}`} className="tap-44 relative w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center">
                             <Plus className="w-3.5 h-3.5" />
                           </button>
-                          <button type="button" onClick={() => onRemove(id)} aria-label={`Quitar ${item.title}`} className="ml-auto p-2 rounded-full text-red-600 hover:bg-red-50">
+                          <button type="button" onClick={() => onRemove(id)} aria-label={`Quitar ${item.title}`} className="tap-44 relative ml-auto p-2 rounded-full text-red-600 hover:bg-red-50">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>

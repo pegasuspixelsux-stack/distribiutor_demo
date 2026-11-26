@@ -179,3 +179,17 @@ html {
     animation: none;
   }
 }
+
+/* Small round buttons (quantity steppers, favorite, add to cart) keep their look but get a 44×44px touch area,
+   the minimum comfortable size for a finger. The element itself must be positioned (relative/absolute). */
+@utility tap-44 {
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}

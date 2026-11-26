@@ -4,7 +4,7 @@ import { seedSampleFavorites, toggleFavorite as toggleFavoriteInDb } from '@/src
 import { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { buildToken, resolvePinToken, toClientAccess } from '../services/pricingService';
+import { buildToken, toClientAccess } from '../services/pricingService';
 import { PRICE_LEVEL_IDS, type ClientAccess, type PriceLevel } from '../types/firestore';
 
 const STORAGE_KEY = 'merkado-client-token';
@@ -36,7 +36,7 @@ const writeToken = (token: string | null) => {
   listeners.forEach((l) => l());
 };
 
-export type TokenResult = 'ok' | 'invalid' | 'suspended' | 'error';
+export type TokenResult = 'ok' | 'invalid' | 'suspended' | 'error' | 'too_many';
 
 interface ClientState {
   /** The customer identified by the token in their link; null for ordinary visitors. */
@@ -120,11 +120,20 @@ export function ClientProvider({ children }: { children: ReactNode }) {
       suspended: Boolean(suspended),
       openWithToken,
       login: async (phone: string, code: string) => {
-        // A 4-digit PIN points to the customer's access token; the access code itself has letters and is longer.
+        // A 4-digit PIN points to the customer's access token. It is checked on the server, which limits attempts
+        // (the PIN table is closed to browsers). The access code itself has letters and is longer.
         if (/^\d{4}$/.test(code.trim())) {
           try {
-            const token = await resolvePinToken(phone, code.trim());
-            return token ? openWithToken(token) : 'invalid';
+            const res = await fetch('/api/client-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ phone, pin: code.trim() }),
+            });
+            if (res.status === 429) return 'too_many';
+            if (res.status === 400 || res.status === 401) return 'invalid';
+            if (!res.ok) return 'error';
+            const { token } = (await res.json()) as { token?: unknown };
+            return typeof token === 'string' ? openWithToken(token) : 'invalid';
           } catch {
             return 'error';
           }

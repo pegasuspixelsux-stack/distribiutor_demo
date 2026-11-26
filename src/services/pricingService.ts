@@ -12,6 +12,7 @@ import {
   type Unsubscribe,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { phoneKey } from '../utils/phone';
 import { PAYMENT_METHODS, PRICE_LEVEL_IDS, type Client, type ClientAccess, type ClientStatus, type PaymentMethod, type PriceLevel } from '../types/firestore';
 
 const PRICE_LEVELS = 'price_levels';
@@ -95,12 +96,7 @@ export function toClientAccess(token: string, d: DocumentData): ClientAccess {
   };
 }
 
-/** Phone number reduced to the digits that matter, so '099 123 456' and '+598 99 123 456' match. */
-export function phoneKey(phone: string): string {
-  let d = phone.replace(/\D/g, '');
-  if (d.startsWith('598') && d.length > 9) d = d.slice(3);
-  return d.replace(/^0+/, '');
-}
+export { phoneKey };
 
 const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
@@ -120,15 +116,8 @@ export function newPin(): string {
   return String(crypto.getRandomValues(new Uint32Array(1))[0] % 10000).padStart(4, '0');
 }
 
-/** client_pins/{phone}-{pin} points at the customer's access token, so phone + PIN can sign in. */
+/** client_pins/{phone}-{pin} points at the customer's access token, so phone + PIN can sign in (checked by /api/client-login; browsers cannot read it). */
 const pinDocId = (phone: string, pin: string) => `${phoneKey(phone)}-${pin}`;
-
-/** The access token behind phone + PIN, or null if that pair does not exist. */
-export async function resolvePinToken(phone: string, pin: string): Promise<string | null> {
-  const snap = await getDoc(doc(requireDb(), CLIENT_PINS, pinDocId(phone, pin)));
-  const token = snap.data()?.token;
-  return typeof token === 'string' ? token : null;
-}
 
 /** The customer's portal link. */
 export const accessLink = (origin: string, token: string) => `${origin}/client?token=${token}`;

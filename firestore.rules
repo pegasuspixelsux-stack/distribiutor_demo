@@ -95,41 +95,59 @@ service cloud.firestore {
     }
 
     // ---------------------------------------------------------------- leads
-    // The public website can create a lead (and nothing else). Agents manage them,
-    // but the only fields they can change are status, notes and assignment.
+    // The public website can create a contact lead (the wholesale sign-up form) and nothing else: no prices,
+    // quantities or customer ids. Customer orders are written by the server (/api/orders), which works out
+    // the prices itself. Agents create orders from the dashboard and manage leads; the only fields they can
+    // change afterwards are status, notes, assignment and the order corrections listed below.
 
-    match /leads/{id} {
-      allow create: if request.resource.data.keys().hasOnly([
+    function validPublicLead(d) {
+      return d.keys().hasOnly(['name', 'email', 'property', 'message', 'status', 'createdAt', 'phone', 'channel'])
+        && d.status == 'new'
+        && d.createdAt == request.time
+        && d.name is string && d.name.size() <= 200
+        && d.email is string && d.email.size() <= 320
+        && d.message is string && d.message.size() <= 5000
+        && (!('property' in d) || (d.property is string && d.property.size() <= 200))
+        && (!('phone' in d) || (d.phone is string && d.phone.size() <= 50))
+        && (!('channel' in d) || d.channel in ['WhatsApp', 'Portal', 'Direct']);
+    }
+
+    function validAgentLead(d) {
+      return d.keys().hasOnly([
             'name', 'email', 'property', 'message', 'status', 'createdAt',
             'propertyId', 'clientName', 'phone', 'channel',
             'unitPrice', 'quantity', 'clientId', 'priceLevelId', 'orderId'
           ])
-        && request.resource.data.status == 'new'
-        && request.resource.data.createdAt == request.time
-        && request.resource.data.email is string && request.resource.data.email.size() <= 320
-        && request.resource.data.message is string && request.resource.data.message.size() <= 5000
+        && d.status == 'new'
+        && d.createdAt == request.time
+        && d.email is string && d.email.size() <= 320
+        && d.message is string && d.message.size() <= 5000
         && (
-          ('name' in request.resource.data
-            && request.resource.data.name is string && request.resource.data.name.size() <= 200)
-          || ('clientName' in request.resource.data
-            && request.resource.data.clientName is string && request.resource.data.clientName.size() <= 200)
+          ('name' in d
+            && d.name is string && d.name.size() <= 200)
+          || ('clientName' in d
+            && d.clientName is string && d.clientName.size() <= 200)
         )
-        && (!('phone' in request.resource.data)
-            || (request.resource.data.phone is string && request.resource.data.phone.size() <= 50))
-        && (!('unitPrice' in request.resource.data)
-            || (request.resource.data.unitPrice is number
-                && request.resource.data.unitPrice >= 0 && request.resource.data.unitPrice < 1000000))
-        && (!('quantity' in request.resource.data)
-            || (request.resource.data.quantity is int
-                && request.resource.data.quantity >= 1 && request.resource.data.quantity <= 99999))
-        && (!('clientId' in request.resource.data)
-            || (request.resource.data.clientId is string && request.resource.data.clientId.size() <= 64))
-        && (!('priceLevelId' in request.resource.data)
-            || (request.resource.data.priceLevelId is string && request.resource.data.priceLevelId.size() <= 40))
-        && (!('orderId' in request.resource.data)
-            || (request.resource.data.orderId is string && request.resource.data.orderId.size() <= 64))
-        && (!('channel' in request.resource.data)
-            || request.resource.data.channel in ['WhatsApp', 'Portal', 'Direct']);
+        && (!('phone' in d)
+            || (d.phone is string && d.phone.size() <= 50))
+        && (!('unitPrice' in d)
+            || (d.unitPrice is number
+                && d.unitPrice >= 0 && d.unitPrice < 1000000))
+        && (!('quantity' in d)
+            || (d.quantity is int
+                && d.quantity >= 1 && d.quantity <= 99999))
+        && (!('clientId' in d)
+            || (d.clientId is string && d.clientId.size() <= 64))
+        && (!('priceLevelId' in d)
+            || (d.priceLevelId is string && d.priceLevelId.size() <= 40))
+        && (!('orderId' in d)
+            || (d.orderId is string && d.orderId.size() <= 64))
+        && (!('channel' in d)
+            || d.channel in ['WhatsApp', 'Portal', 'Direct']);
+    }
+
+    match /leads/{id} {
+      allow create: if validPublicLead(request.resource.data) || (isAgent() && validAgentLead(request.resource.data));
 
       allow read, delete: if isAgent();
 
@@ -234,10 +252,13 @@ service cloud.firestore {
     }
 
     // client_pins/{phone}-{pin}: lets a customer sign in with phone + 4-digit PIN. It only holds a pointer
-    // to their access token. Reading one entry needs both values; listing is blocked. Only admins write.
+    // to their access token. Only the server reads it (a 4-digit PIN read from a browser could be guessed
+    // by trying all 10,000); listing is blocked. Only admins write.
+    // rate_limits/{key} (attempt counters for the API routes) has no rule here, so browsers cannot touch it.
 
     match /client_pins/{id} {
-      allow get: if true;
+      // Checked only by the server (/api/client-login), which limits attempts; browsers cannot read it.
+      allow get: if false;
       allow list: if false;
       allow create, update, delete: if isAdmin();
     }

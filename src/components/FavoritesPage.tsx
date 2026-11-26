@@ -35,7 +35,7 @@ function RemoveButton({ title, onRemove }: { title: string; onRemove: () => Prom
       }}
       aria-label={`Quitar ${title} de favoritos`}
       title="Quitar de favoritos"
-      className="w-9 h-9 shrink-0 rounded-full border border-[#000000]/5 flex items-center justify-center text-[#515154] hover:bg-[#F5F5F7] hover:text-red-600 disabled:opacity-50 transition-colors"
+      className="tap-44 relative w-9 h-9 shrink-0 rounded-full border border-[#000000]/5 flex items-center justify-center text-[#515154] hover:bg-[#F5F5F7] hover:text-red-600 disabled:opacity-50 transition-colors"
     >
       <Trash2 className="w-4 h-4" />
     </button>
@@ -144,11 +144,11 @@ export default function FavoritesPage() {
                       <Link href={item.href ?? '/productos'} className="text-sm font-medium truncate block hover:underline">{item.title}</Link>
                       <p className="text-xs text-[#515154]">Hoy: {priceWithShortUnit(unitPriceOf(item), item.pricingMode)}</p>
                       <div className="mt-2 flex items-center gap-2">
-                        <button type="button" onClick={() => change(id, -1)} disabled={q <= 1} aria-label={`Disminuir ${item.title}`} className="w-7 h-7 rounded-full bg-[#F5F5F7] flex items-center justify-center disabled:opacity-30">
+                        <button type="button" onClick={() => change(id, -1)} disabled={q <= 1} aria-label={`Disminuir ${item.title}`} className="tap-44 relative w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center disabled:opacity-30">
                           <Minus className="w-3.5 h-3.5" />
                         </button>
                         <span className="min-w-16 text-center text-sm font-medium" aria-live="polite">{quantityLabel(q, item.pricingMode)}</span>
-                        <button type="button" onClick={() => change(id, 1)} aria-label={`Aumentar ${item.title}`} className="w-7 h-7 rounded-full bg-[#F5F5F7] flex items-center justify-center">
+                        <button type="button" onClick={() => change(id, 1)} aria-label={`Aumentar ${item.title}`} className="tap-44 relative w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center">
                           <Plus className="w-3.5 h-3.5" />
                         </button>
                       </div>
@@ -205,7 +205,6 @@ export default function FavoritesPage() {
           setQty({});
           setExcluded(new Set(available.map((i) => String(i.id))));
         }}
-        buyerType={client && level ? 'wholesale' : 'retail'}
       />
       <SiteFooter />
     </div>

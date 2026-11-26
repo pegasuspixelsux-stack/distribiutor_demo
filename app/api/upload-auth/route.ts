@@ -30,7 +30,8 @@ async function verifyStaff(idToken: string): Promise<boolean> {
   );
   if (!profile.ok) return false;
   const fields = (await profile.json()).fields ?? {};
-  return fields.active?.booleanValue !== false && Boolean(fields.role?.stringValue);
+  // Same test as isAgent() in firestore.rules: the profile must be explicitly active.
+  return fields.active?.booleanValue === true && Boolean(fields.role?.stringValue);
 }
 
 export async function GET(request: Request) {

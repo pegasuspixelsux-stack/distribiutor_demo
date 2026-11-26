@@ -48,7 +48,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<StoredLine[]>([]);
   const [open, setOpen] = useState(false);
   const loaded = useRef(false);
-  const { client, level } = useClient();
+  const { client } = useClient();
 
   // Restore the saved cart once on the client (the server render always starts empty).
   useEffect(() => {
@@ -107,7 +107,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         onChangeQty={changeQty}
         onRemove={remove}
         onPlaced={clear}
-        buyerType={level ? 'wholesale' : 'retail'}
       />
     </CartContext.Provider>
   );
