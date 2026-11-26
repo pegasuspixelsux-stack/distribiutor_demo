@@ -22,7 +22,6 @@ import { useClient } from '@/src/context/ClientContext';
 import { applyBoxFirst, applyLevel } from '@/src/utils/pricing';
 import {
   ArrowUpRight,
-  KeyRound,
   Search,
   Star,
 } from 'lucide-react';
@@ -39,11 +38,11 @@ const HERO_HEADING_CLASS =
 const HERO_TEXT_CLASS =
   'mt-4 max-md:mt-3 md:mt-2 max-w-2xl max-md:w-full max-md:max-w-sm max-md:text-left text-[17px] max-md:text-[15px] max-md:leading-[1.45] max-md:tracking-[-0.022em] md:text-[15px] md:max-w-[58ch] text-pretty text-white/95 font-normal leading-relaxed md:leading-normal';
 
-/** Hero buttons: dark-to-light green vertical gradient (primary) and a white outline (secondary), both with hover and press effects. */
+/** Hero buttons: solid black (primary) and a white outline (secondary), both with hover and press effects; the primary grows 15% on hover. */
 const HERO_BTN_BASE =
   'inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 max-md:min-h-11 text-sm max-md:text-base max-md:tracking-[-0.022em] font-semibold transition-all duration-300 ease-out active:translate-y-0 active:scale-95';
 const HERO_BTN_PRIMARY =
-  `${HERO_BTN_BASE} group text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] bg-gradient-to-b from-[#0A3A1C] to-[#1F6B2A] shadow-md shadow-black/25 ring-1 ring-white/30 hover:ring-white/70 hover:brightness-110 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-300/40 active:brightness-90`;
+  `${HERO_BTN_BASE} group text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] bg-black shadow-md shadow-black/25 ring-1 ring-white/30 hover:ring-white/70 hover:bg-neutral-800 hover:scale-[1.15] hover:shadow-lg hover:shadow-green-300/40 active:brightness-90`;
 const HERO_BTN_SECONDARY =
   `${HERO_BTN_BASE} border-2 border-white bg-transparent text-white shadow-md shadow-black/25 hover:bg-white hover:text-[#14532D] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-white/30 active:bg-white/90`;
 
@@ -178,8 +177,10 @@ export default function HomePage({
               />
             </div>
             {/* Phones only: short heading below the image, pulled up into the empty space under the basket (tablets and desktop use the heading from Ajustes). */}
-            <h1 className="md:hidden self-center w-full max-w-sm -mt-6 text-center text-balance text-[clamp(22px,6.4vw,28px)] font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
-              Frutas y vegetales frescos para tu restaurante, hotel o comercio.
+            <h1 className="md:hidden self-center w-fit max-w-sm -mt-6 text-left text-[clamp(22px,6.4vw,28px)] font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+              <span className="block">Frutas y vegetales frescos</span>
+              <span className="block whitespace-nowrap">para tu restaurante, hotel</span>
+              <span className="block">o comercio.</span>
             </h1>
             {business.heroText && (
               <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
@@ -216,26 +217,16 @@ export default function HomePage({
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               )}
-              {!(client && level) && (
-              <a
-                href="#contact"
-                className={HERO_BTN_SECONDARY}
-              >
-                <KeyRound className="w-4 h-4" />
-                <span>Solicitar acceso mayorista</span>
-              </a>
-              )}
             </div>
             {!(client && level) && (
               <p className="mt-3 text-center text-xs text-white/80">
-                ¿Ya sos cliente?{' '}
-                <button
-                  type="button"
-                  onClick={() => window.dispatchEvent(new CustomEvent(OPEN_CLIENT_LOGIN, { detail: { redirect: '/productos' } }))}
+                ¿Todavía no sos cliente?{' '}
+                <a
+                  href="#contact"
                   className="font-semibold text-white underline underline-offset-2 hover:text-white/80"
                 >
-                  Entrar
-                </button>
+                  Solicite acceso
+                </a>
               </p>
             )}
             </div>
