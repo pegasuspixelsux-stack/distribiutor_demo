@@ -138,8 +138,8 @@ export default function HomePage({
             <div className="relative w-full max-md:shrink-0 px-5 md:px-[max(1.5rem,calc((100%-1440px)/2+1.5rem))] max-md:pt-0 pt-[clamp(16px,4svh,32px)] max-md:pb-4 pb-[max(clamp(16px,4svh,32px),env(safe-area-inset-bottom))] md:pt-12 md:pb-12 md:landscape:max-xl:pt-7 md:landscape:max-xl:pb-7 md:portrait:pt-7 md:portrait:pb-7 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 lg:gap-16">
             {/* Left column: eyebrow, heading, text, buttons, social proof */}
             <div className="flex flex-col items-start text-left min-w-0 animate-slide-up">
-            {/* Google reviews, at the top of the text block (desktop and tablet only) */}
-            <div className="mb-4 max-md:hidden flex items-center gap-1.5 text-sm max-md:text-[13px] leading-snug">
+            {/* Google reviews, at the top of the text block (on phones, centred above the image) */}
+            <div className="mb-4 max-md:mb-1 max-md:self-center flex items-center gap-1.5 text-sm max-md:text-[13px] leading-snug">
               <span className="font-semibold">Google</span>
               <span
                 className="flex items-center gap-0.5 text-amber-300"
@@ -165,30 +165,26 @@ export default function HomePage({
             {business.heroHeading && (
               <h1 className={`${HERO_HEADING_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroHeading}</h1>
             )}
-            {/* Phones only: the "De Nuestra Tierra a Tu Mesa" image, full width, its edges faded into the hero background. */}
-            <div className="md:hidden relative -mx-5 w-[calc(100%+2.5rem)]">
+            {/* Phones only: cut-out basket of fruit and vegetables (transparent WebP), so it sits straight on the hero background. */}
+            <div className="md:hidden w-full max-w-sm self-center">
               <Image
-                src="/hero_image/De%20Nuestra%20Tierra%20a%20Tu%20Mesa.png"
-                alt="De Nuestra Tierra a Tu Mesa: frescura, nutrición y sostenibilidad"
-                width={1121}
-                height={1403}
-                sizes="100vw"
+                src="/hero_image/frutas_verduras_hero.webp"
+                alt="Frutas y verduras frescas"
+                width={500}
+                height={500}
+                sizes="(max-width: 767px) 384px, 0px"
                 priority
-                className="block w-full h-auto"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,var(--brand-bg,#2E7D32)_0%,transparent_14%,transparent_72%,var(--brand-bg,#2E7D32)_100%)]"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--brand-bg,#2E7D32)_0%,transparent_10%,transparent_90%,var(--brand-bg,#2E7D32)_100%)]"
+                className="block w-full h-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)]"
               />
             </div>
+            {/* Phones only: short heading below the image, pulled up into the empty space under the basket (tablets and desktop use the heading from Ajustes). */}
+            <h1 className="md:hidden self-center w-full max-w-sm -mt-6 text-center text-balance text-[clamp(22px,6.4vw,28px)] font-semibold leading-[1.15] tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+              Frutas y vegetales frescos para tu restaurante, hotel o comercio.
+            </h1>
             {business.heroText && (
               <p className={`${HERO_TEXT_CLASS} whitespace-pre-line max-md:hidden`}>{business.heroText}</p>
             )}
-            <div className="mt-[clamp(16px,4svh,32px)] max-md:-mt-14 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
+            <div className="mt-[clamp(16px,4svh,32px)] max-md:mt-5 max-md:relative max-md:z-10 md:mt-5 flex flex-col items-center max-md:w-full max-md:max-w-sm">
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 max-md:gap-2.5 md:gap-2.5 max-md:w-full">
               {client && level ? (
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-2.5 max-md:w-full">
